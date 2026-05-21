@@ -2,13 +2,12 @@ using MessagePipe;
 using R3;
 using System;
 using UnityEngine;
-using VContainer.Unity;
 
-public class CoinStatisticsService : IInitializable, IDisposable
+public class CoinStatisticsService : IDisposable
 {
     private const string TotalCoinsCollectedKey = "total_coins_collected";
     private readonly ISubscriber<CoinCollectedEvent> _coinCollectedSubscriber;
-    private IDisposable _coinCollectedSubscription;
+    private readonly IDisposable _coinCollectedSubscription;
     private readonly ReactiveProperty<int> _totalCoinsCollected;
 
     public ReadOnlyReactiveProperty<int> TotalCoinsCollected => _totalCoinsCollected;
@@ -18,10 +17,6 @@ public class CoinStatisticsService : IInitializable, IDisposable
         _coinCollectedSubscriber = coinCollectedSubscriber;
         var persistedTotal = PlayerPrefs.GetInt(TotalCoinsCollectedKey, 0);
         _totalCoinsCollected = new ReactiveProperty<int>(persistedTotal);
-    }
-
-    public void Initialize()
-    {
         _coinCollectedSubscription = _coinCollectedSubscriber.Subscribe(OnCoinCollected);
     }
 

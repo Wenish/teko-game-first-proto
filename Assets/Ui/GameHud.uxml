@@ -48,6 +48,35 @@
                     -unity-text-align: middle-left;
                     min-width: 128px;
                 " />
+            <ui:Label
+                name="lifetime-coin-label"
+                text="Lifetime: 0"
+                style="
+                    margin-left: 10px;
+                    color: rgb(220, 245, 255);
+                    background-color: rgba(22, 31, 46, 0.92);
+                    border-top-left-radius: 14px;
+                    border-top-right-radius: 14px;
+                    border-bottom-left-radius: 14px;
+                    border-bottom-right-radius: 14px;
+                    border-left-width: 1px;
+                    border-right-width: 1px;
+                    border-top-width: 1px;
+                    border-bottom-width: 1px;
+                    border-left-color: rgba(111, 217, 255, 0.75);
+                    border-right-color: rgba(111, 217, 255, 0.75);
+                    border-top-color: rgba(111, 217, 255, 0.75);
+                    border-bottom-color: rgba(111, 217, 255, 0.75);
+                    padding-left: 14px;
+                    padding-right: 14px;
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                    unity-font-style: bold;
+                    font-size: 18px;
+                    letter-spacing: 0.6px;
+                    -unity-text-align: middle-left;
+                    min-width: 148px;
+                " />
         </ui:VisualElement>
 
         <ui:Label

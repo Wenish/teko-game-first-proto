@@ -6,9 +6,13 @@ public class GameplayLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<CoinService>(Lifetime.Scoped);
+        builder.Register<CoinStatisticsService>(Lifetime.Scoped);
         builder.Register<WinConditionService>(Lifetime.Scoped);
 
-        builder.RegisterEntryPoint<CoinStatisticsService>();
+        builder.RegisterBuildCallback(container =>
+        {
+            container.Resolve<CoinStatisticsService>();
+        });
 
         builder.RegisterComponentInHierarchy<PlayerMovement>();
         builder.RegisterComponentInHierarchy<DebugCoinView>();

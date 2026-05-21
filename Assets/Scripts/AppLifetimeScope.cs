@@ -11,7 +11,7 @@ public class AppLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint<GameController>();
 
-        builder.RegisterComponentOnNewGameObject<AudioPlayer>(Lifetime.Singleton, "AudioPlayer");
+        builder.RegisterComponentOnNewGameObject<AudioPlayer>(Lifetime.Singleton);
 
         builder.RegisterBuildCallback(container =>
         {
