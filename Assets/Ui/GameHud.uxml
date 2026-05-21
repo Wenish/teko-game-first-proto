@@ -1,4 +1,87 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
-    <ui:Label name="coin-label" text="Coins: 0" />
-    <ui:Label name="win-label" text="You win!" style="display: none;" />
+    <ui:VisualElement
+        name="hud-root"
+        style="
+            flex-grow: 1;
+            position: relative;
+            padding-left: 18px;
+            padding-right: 18px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            background-color: rgba(10, 16, 24, 0.08);
+        ">
+        <ui:VisualElement
+            name="coin-anchor"
+            style="
+                position: absolute;
+                right: 18px;
+                top: 16px;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+            ">
+            <ui:Label
+                name="coin-label"
+                text="Coins: 0"
+                style="
+                    color: rgb(255, 244, 209);
+                    background-color: rgba(22, 31, 46, 0.92);
+                    border-top-left-radius: 14px;
+                    border-top-right-radius: 14px;
+                    border-bottom-left-radius: 14px;
+                    border-bottom-right-radius: 14px;
+                    border-left-width: 1px;
+                    border-right-width: 1px;
+                    border-top-width: 1px;
+                    border-bottom-width: 1px;
+                    border-left-color: rgba(255, 202, 87, 0.75);
+                    border-right-color: rgba(255, 202, 87, 0.75);
+                    border-top-color: rgba(255, 202, 87, 0.75);
+                    border-bottom-color: rgba(255, 202, 87, 0.75);
+                    padding-left: 14px;
+                    padding-right: 14px;
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                    unity-font-style: bold;
+                    font-size: 18px;
+                    letter-spacing: 0.6px;
+                    -unity-text-align: middle-left;
+                    min-width: 128px;
+                " />
+        </ui:VisualElement>
+
+        <ui:Label
+            name="win-label"
+            text="You win!"
+            style="
+                display: none;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                translate: -50% -50%;
+                max-width: 340px;
+                color: rgb(239, 255, 245);
+                background-color: rgba(18, 78, 52, 0.9);
+                border-top-left-radius: 22px;
+                border-top-right-radius: 22px;
+                border-bottom-left-radius: 22px;
+                border-bottom-right-radius: 22px;
+                border-left-width: 2px;
+                border-right-width: 2px;
+                border-top-width: 2px;
+                border-bottom-width: 2px;
+                border-left-color: rgba(153, 255, 190, 0.95);
+                border-right-color: rgba(153, 255, 190, 0.95);
+                border-top-color: rgba(153, 255, 190, 0.95);
+                border-bottom-color: rgba(153, 255, 190, 0.95);
+                padding-left: 22px;
+                padding-right: 22px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                unity-font-style: bold;
+                font-size: 34px;
+                letter-spacing: 1px;
+                -unity-text-align: middle-center;
+            " />
+    </ui:VisualElement>
 </ui:UXML>

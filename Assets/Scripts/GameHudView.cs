@@ -6,9 +6,13 @@ using VContainer;
 [RequireComponent(typeof(UIDocument))]
 public class GameHudView : MonoBehaviour
 {
+    private const float CoinAnchorTop = 16f;
+    private const float CoinAnchorRight = 18f;
+
     private CoinService _coinService;
     private WinConditionService _winConditionService;
 
+    private VisualElement _coinAnchor;
     private Label _coinLabel;
     private Label _winLabel;
 
@@ -25,10 +29,17 @@ public class GameHudView : MonoBehaviour
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
+        _coinAnchor = root.Q<VisualElement>("coin-anchor");
         _coinLabel = root.Q<Label>("coin-label");
         _winLabel = root.Q<Label>("win-label");
 
+        ApplySafeAreaToHud();
         _winLabel.style.display = DisplayStyle.None;
+    }
+
+    private void OnRectTransformDimensionsChange()
+    {
+        ApplySafeAreaToHud();
     }
 
     private void Start()
@@ -53,5 +64,20 @@ public class GameHudView : MonoBehaviour
             hasWon
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
+    }
+
+    private void ApplySafeAreaToHud()
+    {
+        if (_coinAnchor == null)
+        {
+            return;
+        }
+
+        var safeArea = Screen.safeArea;
+        var rightInset = Screen.width - safeArea.xMax;
+        var topInset = Screen.height - safeArea.yMax;
+
+        _coinAnchor.style.right = CoinAnchorRight + rightInset;
+        _coinAnchor.style.top = CoinAnchorTop + topInset;
     }
 }
