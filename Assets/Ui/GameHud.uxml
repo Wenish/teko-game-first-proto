@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Label name="coin-label" text="Coins: 0" />
+    <ui:Label name="win-label" text="You win!" style="display: none;" />
+</ui:UXML>
