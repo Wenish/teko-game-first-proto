@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameLifetimeScope
   parentReference:
-    TypeName: 
+    TypeName: AppLifetimeScope
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 564759034}

@@ -1,3 +1,4 @@
+using MessagePipe;
 using UnityEngine;
 using VContainer;
 
@@ -5,12 +6,12 @@ public class Coin : MonoBehaviour
 {
     [SerializeField] private int value = 1;
 
-    private CoinService _coinService;
+     private IPublisher<CoinCollectedEvent> _coinCollectedPublisher;
 
     [Inject]
-    public void Construct(CoinService coinService)
+    public void Construct(IPublisher<CoinCollectedEvent> coinCollectedPublisher)
     {
-        _coinService = coinService;
+        _coinCollectedPublisher = coinCollectedPublisher;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,7 +19,8 @@ public class Coin : MonoBehaviour
         if (!other.TryGetComponent<PlayerMovement>(out _))
             return;
 
-        _coinService.AddCoin(value);
+        _coinCollectedPublisher.Publish(new CoinCollectedEvent(value));
+        
         Destroy(gameObject);
     }
 }
