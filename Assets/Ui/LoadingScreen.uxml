@@ -1,0 +1,241 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+	<ui:VisualElement
+		name="loading-root"
+		style="
+			flex-grow: 1;
+			position: relative;
+			justify-content: center;
+			align-items: center;
+			overflow: hidden;
+			background-color: rgb(7, 12, 23);
+		">
+		<ui:VisualElement
+			name="background-aurora-left"
+			picking-mode="Ignore"
+			style="
+				position: absolute;
+				left: -240px;
+				top: -150px;
+				width: 700px;
+				height: 700px;
+				background-color: rgba(47, 210, 255, 0.28);
+				border-top-left-radius: 350px;
+				border-top-right-radius: 350px;
+				border-bottom-left-radius: 350px;
+				border-bottom-right-radius: 350px;
+			" />
+
+		<ui:VisualElement
+			name="background-aurora-right"
+			picking-mode="Ignore"
+			style="
+				position: absolute;
+				right: -250px;
+				bottom: -190px;
+				width: 760px;
+				height: 760px;
+				background-color: rgba(255, 111, 72, 0.23);
+				border-top-left-radius: 380px;
+				border-top-right-radius: 380px;
+				border-bottom-left-radius: 380px;
+				border-bottom-right-radius: 380px;
+			" />
+
+		<ui:VisualElement
+			name="background-haze"
+			picking-mode="Ignore"
+			style="
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				background-color: rgba(18, 34, 58, 0.52);
+			" />
+
+		<ui:VisualElement
+			name="background-grid-overlay"
+			picking-mode="Ignore"
+			style="
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				border-left-width: 1px;
+				border-right-width: 1px;
+				border-top-width: 1px;
+				border-bottom-width: 1px;
+				border-left-color: rgba(165, 214, 255, 0.07);
+				border-right-color: rgba(165, 214, 255, 0.07);
+				border-top-color: rgba(165, 214, 255, 0.07);
+				border-bottom-color: rgba(165, 214, 255, 0.07);
+			" />
+
+		<ui:VisualElement
+			name="loading-card"
+			style="
+				width: 420px;
+				max-width: 86%;
+				min-height: 320px;
+				padding-left: 30px;
+				padding-right: 30px;
+				padding-top: 30px;
+				padding-bottom: 28px;
+				justify-content: center;
+				align-items: center;
+				background-color: rgba(11, 19, 36, 0.78);
+				border-top-left-radius: 30px;
+				border-top-right-radius: 30px;
+				border-bottom-left-radius: 30px;
+				border-bottom-right-radius: 30px;
+				border-left-width: 1px;
+				border-right-width: 1px;
+				border-top-width: 1px;
+				border-bottom-width: 1px;
+				border-left-color: rgba(176, 226, 255, 0.38);
+				border-right-color: rgba(176, 226, 255, 0.38);
+				border-top-color: rgba(176, 226, 255, 0.38);
+				border-bottom-color: rgba(176, 226, 255, 0.38);
+			">
+			<ui:VisualElement
+				name="indicator-stack"
+				style="
+					width: 126px;
+					height: 126px;
+					position: relative;
+					justify-content: center;
+					align-items: center;
+					margin-bottom: 20px;
+				">
+				<ui:VisualElement
+					name="indicator-ring-outer"
+					picking-mode="Ignore"
+					style="
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 126px;
+						height: 126px;
+						border-top-left-radius: 63px;
+						border-top-right-radius: 63px;
+						border-bottom-left-radius: 63px;
+						border-bottom-right-radius: 63px;
+						border-left-width: 3px;
+						border-right-width: 3px;
+						border-top-width: 3px;
+						border-bottom-width: 3px;
+						border-left-color: rgba(97, 228, 255, 0.28);
+						border-right-color: rgba(97, 228, 255, 0.28);
+						border-top-color: rgba(97, 228, 255, 0.88);
+						border-bottom-color: rgba(97, 228, 255, 0.88);
+					" />
+
+				<ui:VisualElement
+					name="indicator-ring-inner"
+					picking-mode="Ignore"
+					style="
+						position: absolute;
+						left: 18px;
+						top: 18px;
+						width: 90px;
+						height: 90px;
+						border-top-left-radius: 45px;
+						border-top-right-radius: 45px;
+						border-bottom-left-radius: 45px;
+						border-bottom-right-radius: 45px;
+						border-left-width: 2px;
+						border-right-width: 2px;
+						border-top-width: 2px;
+						border-bottom-width: 2px;
+						border-left-color: rgba(255, 140, 98, 0.24);
+						border-right-color: rgba(255, 140, 98, 0.24);
+						border-top-color: rgba(255, 140, 98, 0.86);
+						border-bottom-color: rgba(255, 140, 98, 0.86);
+					" />
+
+				<ui:VisualElement
+					name="indicator-core"
+					style="
+						width: 20px;
+						height: 20px;
+						border-top-left-radius: 10px;
+						border-top-right-radius: 10px;
+						border-bottom-left-radius: 10px;
+						border-bottom-right-radius: 10px;
+						background-color: rgb(232, 248, 255);
+					" />
+			</ui:VisualElement>
+
+			<ui:Label
+				name="loading-title"
+				text="LOADING"
+				style="
+					color: rgb(241, 248, 255);
+					font-size: 28px;
+					unity-font-style: bold;
+					letter-spacing: 5.2px;
+					-unity-text-align: middle-center;
+					margin-bottom: 6px;
+				" />
+
+			<ui:Label
+				name="loading-subtitle"
+				text="Preparing next scene"
+				style="
+					color: rgba(196, 218, 242, 0.9);
+					font-size: 15px;
+					-unity-text-align: middle-center;
+					margin-bottom: 20px;
+				" />
+
+			<ui:VisualElement
+				name="loading-track"
+				style="
+					width: 100%;
+					max-width: 300px;
+					height: 10px;
+					padding-left: 2px;
+					padding-right: 2px;
+					padding-top: 2px;
+					padding-bottom: 2px;
+					background-color: rgba(15, 24, 40, 0.82);
+					border-top-left-radius: 8px;
+					border-top-right-radius: 8px;
+					border-bottom-left-radius: 8px;
+					border-bottom-right-radius: 8px;
+					border-left-width: 1px;
+					border-right-width: 1px;
+					border-top-width: 1px;
+					border-bottom-width: 1px;
+					border-left-color: rgba(160, 212, 255, 0.24);
+					border-right-color: rgba(160, 212, 255, 0.24);
+					border-top-color: rgba(160, 212, 255, 0.24);
+					border-bottom-color: rgba(160, 212, 255, 0.24);
+				">
+				<ui:VisualElement
+					name="loading-fill"
+					style="
+						width: 54%;
+						height: 100%;
+						border-top-left-radius: 6px;
+						border-top-right-radius: 6px;
+						border-bottom-left-radius: 6px;
+						border-bottom-right-radius: 6px;
+						background-color: rgb(99, 224, 255);
+					" />
+			</ui:VisualElement>
+
+			<ui:Label
+				name="loading-hint"
+				text="Synchronizing systems..."
+				style="
+					color: rgba(168, 190, 214, 0.86);
+					font-size: 12px;
+					letter-spacing: 0.8px;
+					-unity-text-align: middle-center;
+					margin-top: 14px;
+				" />
+		</ui:VisualElement>
+	</ui:VisualElement>
+</ui:UXML>

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e887812da1a6ca7469b4318eb7a4c487, type: 3}
-  m_Name: MainMenuUIDocumentConfig
+  m_Name: UIDocumentConfigMainMenu
   m_EditorClassIdentifier: Assembly-CSharp::UIDocumentConfig
   PanelSettings: {fileID: 11400000, guid: 30c89250c148d974d8d1b52945bb17b5, type: 2}
   VisualTreeAsset: {fileID: 9197481963319205126, guid: c1da1c8407e0e74479c0f4ab9932114e, type: 3}

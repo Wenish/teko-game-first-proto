@@ -11,7 +11,7 @@ public class MainMenuView : MonoBehaviour
     private UIDocument _uiDocument;
 
     [Inject]
-    public void Construct(UIDocumentConfig uiDocumentConfig, SceneService sceneService)
+    public void Construct([Key(UIDocumentConfig.UIType.MainMenu)] UIDocumentConfig uiDocumentConfig, SceneService sceneService)
     {
         _uiDocumentConfig = uiDocumentConfig;
         _sceneService = sceneService;

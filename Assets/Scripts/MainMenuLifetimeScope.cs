@@ -7,7 +7,9 @@ public class MainMenuLifetimeScope : LifetimeScope
     private UIDocumentConfig _mainMenuUIDocumentConfig;
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_mainMenuUIDocumentConfig);
+        builder.RegisterInstance(_mainMenuUIDocumentConfig)
+            .Keyed(UIDocumentConfig.UIType.MainMenu);
+        
         builder.RegisterComponentOnNewGameObject<MainMenuView>(Lifetime.Singleton);
 
         builder.RegisterBuildCallback(container =>
