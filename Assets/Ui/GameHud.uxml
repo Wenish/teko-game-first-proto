@@ -8,7 +8,7 @@
             padding-right: 18px;
             padding-top: 16px;
             padding-bottom: 16px;
-            background-color: rgba(10, 16, 24, 0.08);
+            background-color: rgba(8, 22, 14, 0.12);
         ">
         <ui:VisualElement
             name="coin-anchor"
@@ -24,8 +24,8 @@
                 name="coin-label"
                 text="Coins: 0"
                 style="
-                    color: rgb(255, 244, 209);
-                    background-color: rgba(22, 31, 46, 0.92);
+                    color: rgb(236, 255, 229);
+                    background-color: rgba(14, 34, 20, 0.92);
                     border-top-left-radius: 14px;
                     border-top-right-radius: 14px;
                     border-bottom-left-radius: 14px;
@@ -34,10 +34,10 @@
                     border-right-width: 1px;
                     border-top-width: 1px;
                     border-bottom-width: 1px;
-                    border-left-color: rgba(255, 202, 87, 0.75);
-                    border-right-color: rgba(255, 202, 87, 0.75);
-                    border-top-color: rgba(255, 202, 87, 0.75);
-                    border-bottom-color: rgba(255, 202, 87, 0.75);
+                    border-left-color: rgba(176, 255, 129, 0.72);
+                    border-right-color: rgba(176, 255, 129, 0.72);
+                    border-top-color: rgba(176, 255, 129, 0.72);
+                    border-bottom-color: rgba(176, 255, 129, 0.72);
                     padding-left: 14px;
                     padding-right: 14px;
                     padding-top: 8px;
@@ -53,8 +53,8 @@
                 text="Lifetime: 0"
                 style="
                     margin-left: 10px;
-                    color: rgb(220, 245, 255);
-                    background-color: rgba(22, 31, 46, 0.92);
+                    color: rgb(227, 255, 231);
+                    background-color: rgba(12, 30, 18, 0.92);
                     border-top-left-radius: 14px;
                     border-top-right-radius: 14px;
                     border-bottom-left-radius: 14px;
@@ -63,10 +63,10 @@
                     border-right-width: 1px;
                     border-top-width: 1px;
                     border-bottom-width: 1px;
-                    border-left-color: rgba(111, 217, 255, 0.75);
-                    border-right-color: rgba(111, 217, 255, 0.75);
-                    border-top-color: rgba(111, 217, 255, 0.75);
-                    border-bottom-color: rgba(111, 217, 255, 0.75);
+                    border-left-color: rgba(123, 255, 170, 0.74);
+                    border-right-color: rgba(123, 255, 170, 0.74);
+                    border-top-color: rgba(123, 255, 170, 0.74);
+                    border-bottom-color: rgba(123, 255, 170, 0.74);
                     padding-left: 14px;
                     padding-right: 14px;
                     padding-top: 8px;
@@ -89,8 +89,8 @@
                 top: 50%;
                 translate: -50% -50%;
                 max-width: 340px;
-                color: rgb(239, 255, 245);
-                background-color: rgba(18, 78, 52, 0.9);
+                color: rgb(241, 255, 244);
+                background-color: rgba(21, 82, 43, 0.92);
                 border-top-left-radius: 22px;
                 border-top-right-radius: 22px;
                 border-bottom-left-radius: 22px;
@@ -99,10 +99,10 @@
                 border-right-width: 2px;
                 border-top-width: 2px;
                 border-bottom-width: 2px;
-                border-left-color: rgba(153, 255, 190, 0.95);
-                border-right-color: rgba(153, 255, 190, 0.95);
-                border-top-color: rgba(153, 255, 190, 0.95);
-                border-bottom-color: rgba(153, 255, 190, 0.95);
+                border-left-color: rgba(171, 255, 186, 0.95);
+                border-right-color: rgba(171, 255, 186, 0.95);
+                border-top-color: rgba(171, 255, 186, 0.95);
+                border-bottom-color: rgba(171, 255, 186, 0.95);
                 padding-left: 22px;
                 padding-right: 22px;
                 padding-top: 12px;

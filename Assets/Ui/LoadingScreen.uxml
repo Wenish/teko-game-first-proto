@@ -7,7 +7,7 @@
 			justify-content: center;
 			align-items: center;
 			overflow: hidden;
-			background-color: rgb(7, 12, 23);
+				background-color: rgb(8, 20, 14);
 		">
 		<ui:VisualElement
 			name="background-aurora-left"
@@ -18,7 +18,7 @@
 				top: -150px;
 				width: 700px;
 				height: 700px;
-				background-color: rgba(47, 210, 255, 0.28);
+					background-color: rgba(96, 255, 149, 0.24);
 				border-top-left-radius: 350px;
 				border-top-right-radius: 350px;
 				border-bottom-left-radius: 350px;
@@ -34,7 +34,7 @@
 				bottom: -190px;
 				width: 760px;
 				height: 760px;
-				background-color: rgba(255, 111, 72, 0.23);
+					background-color: rgba(172, 255, 84, 0.18);
 				border-top-left-radius: 380px;
 				border-top-right-radius: 380px;
 				border-bottom-left-radius: 380px;
@@ -50,7 +50,7 @@
 				right: 0;
 				top: 0;
 				bottom: 0;
-				background-color: rgba(18, 34, 58, 0.52);
+					background-color: rgba(10, 28, 18, 0.58);
 			" />
 
 		<ui:VisualElement
@@ -66,10 +66,10 @@
 				border-right-width: 1px;
 				border-top-width: 1px;
 				border-bottom-width: 1px;
-				border-left-color: rgba(165, 214, 255, 0.07);
-				border-right-color: rgba(165, 214, 255, 0.07);
-				border-top-color: rgba(165, 214, 255, 0.07);
-				border-bottom-color: rgba(165, 214, 255, 0.07);
+					border-left-color: rgba(170, 255, 196, 0.08);
+					border-right-color: rgba(170, 255, 196, 0.08);
+					border-top-color: rgba(170, 255, 196, 0.08);
+					border-bottom-color: rgba(170, 255, 196, 0.08);
 			" />
 
 		<ui:VisualElement
@@ -84,7 +84,7 @@
 				padding-bottom: 28px;
 				justify-content: center;
 				align-items: center;
-				background-color: rgba(11, 19, 36, 0.78);
+					background-color: rgba(11, 28, 18, 0.82);
 				border-top-left-radius: 30px;
 				border-top-right-radius: 30px;
 				border-bottom-left-radius: 30px;
@@ -93,10 +93,10 @@
 				border-right-width: 1px;
 				border-top-width: 1px;
 				border-bottom-width: 1px;
-				border-left-color: rgba(176, 226, 255, 0.38);
-				border-right-color: rgba(176, 226, 255, 0.38);
-				border-top-color: rgba(176, 226, 255, 0.38);
-				border-bottom-color: rgba(176, 226, 255, 0.38);
+					border-left-color: rgba(175, 255, 192, 0.38);
+					border-right-color: rgba(175, 255, 192, 0.38);
+					border-top-color: rgba(175, 255, 192, 0.38);
+					border-bottom-color: rgba(175, 255, 192, 0.38);
 			">
 			<ui:VisualElement
 				name="indicator-stack"
@@ -125,10 +125,10 @@
 						border-right-width: 3px;
 						border-top-width: 3px;
 						border-bottom-width: 3px;
-						border-left-color: rgba(97, 228, 255, 0.28);
-						border-right-color: rgba(97, 228, 255, 0.28);
-						border-top-color: rgba(97, 228, 255, 0.88);
-						border-bottom-color: rgba(97, 228, 255, 0.88);
+						border-left-color: rgba(160, 255, 121, 0.26);
+						border-right-color: rgba(160, 255, 121, 0.26);
+						border-top-color: rgba(160, 255, 121, 0.9);
+						border-bottom-color: rgba(160, 255, 121, 0.9);
 					" />
 
 				<ui:VisualElement
@@ -148,10 +148,10 @@
 						border-right-width: 2px;
 						border-top-width: 2px;
 						border-bottom-width: 2px;
-						border-left-color: rgba(255, 140, 98, 0.24);
-						border-right-color: rgba(255, 140, 98, 0.24);
-						border-top-color: rgba(255, 140, 98, 0.86);
-						border-bottom-color: rgba(255, 140, 98, 0.86);
+						border-left-color: rgba(216, 255, 138, 0.22);
+						border-right-color: rgba(216, 255, 138, 0.22);
+						border-top-color: rgba(216, 255, 138, 0.9);
+						border-bottom-color: rgba(216, 255, 138, 0.9);
 					" />
 
 				<ui:VisualElement
@@ -163,7 +163,7 @@
 						border-top-right-radius: 10px;
 						border-bottom-left-radius: 10px;
 						border-bottom-right-radius: 10px;
-						background-color: rgb(232, 248, 255);
+						background-color: rgb(232, 255, 221);
 					" />
 			</ui:VisualElement>
 
@@ -171,7 +171,7 @@
 				name="loading-title"
 				text="LOADING"
 				style="
-					color: rgb(241, 248, 255);
+					color: rgb(236, 255, 233);
 					font-size: 28px;
 					unity-font-style: bold;
 					letter-spacing: 5.2px;
@@ -183,7 +183,7 @@
 				name="loading-subtitle"
 				text="Preparing next scene"
 				style="
-					color: rgba(196, 218, 242, 0.9);
+					color: rgba(202, 238, 203, 0.9);
 					font-size: 15px;
 					-unity-text-align: middle-center;
 					margin-bottom: 20px;
@@ -193,7 +193,7 @@
 				name="loading-hint"
 				text="Synchronizing systems..."
 				style="
-					color: rgba(168, 190, 214, 0.86);
+					color: rgba(176, 224, 179, 0.86);
 					font-size: 12px;
 					letter-spacing: 0.8px;
 					-unity-text-align: middle-center;
