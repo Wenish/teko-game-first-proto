@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using VContainer;
 using VContainer.Unity;
 
-public class GameController : IAsyncStartable
+public class GameEntryPoint : IAsyncStartable
 {
     private SceneService _sceneService;
 
@@ -15,6 +15,6 @@ public class GameController : IAsyncStartable
 
     public async UniTask StartAsync(CancellationToken cancellation = default)
     {
-        await _sceneService.LoadSceneAsync("GameplayScene");
+        await _sceneService.LoadMainMenuSceneAsync();
     }
 }

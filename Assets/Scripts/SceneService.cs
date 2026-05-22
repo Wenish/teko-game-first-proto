@@ -3,10 +3,23 @@ using UnityEngine.SceneManagement;
 
 public class SceneService
 {
+    private readonly LoadingScreenService _loadingScreen;
     private string _currentScene = string.Empty;
+
+    public SceneService(LoadingScreenService loadingScreen)
+    {
+        _loadingScreen = loadingScreen;
+    }
+
+    public UniTask LoadMainMenuSceneAsync()
+    {
+        return LoadSceneAsync("MainMenuScene");
+    }
 
     public async UniTask LoadSceneAsync(string sceneName)
     {
+        _loadingScreen.Show();
+
         if (!string.IsNullOrEmpty(_currentScene))
         {
             var currentScene = SceneManager.GetSceneByName(_currentScene);
@@ -36,5 +49,7 @@ public class SceneService
         {
             SceneManager.SetActiveScene(loadedScene);
         }
+
+        _loadingScreen.Hide();
     }
 }

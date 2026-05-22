@@ -8,8 +8,9 @@ public class AppLifetimeScope : LifetimeScope
     {
         builder.RegisterMessagePipe();
         builder.Register<SceneService>(Lifetime.Singleton);
+        builder.Register<LoadingScreenService>(Lifetime.Singleton);
 
-        builder.RegisterEntryPoint<GameController>();
+        builder.RegisterEntryPoint<GameEntryPoint>();
 
         builder.RegisterComponentOnNewGameObject<AudioPlayer>(Lifetime.Singleton);
 
