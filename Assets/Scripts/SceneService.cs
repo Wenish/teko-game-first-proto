@@ -20,6 +20,7 @@ public class SceneService
     {
         _loadingScreen.Show();
 
+
         if (!string.IsNullOrEmpty(_currentScene))
         {
             var currentScene = SceneManager.GetSceneByName(_currentScene);
@@ -32,6 +33,11 @@ public class SceneService
                 }
             }
         }
+
+        
+        await UniTask.Delay(System.TimeSpan.FromSeconds(5));
+
+        
 
         var loadOperation = SceneManager.LoadSceneAsync(
             sceneName,
