@@ -35,7 +35,7 @@ public class SceneService
         }
 
         
-        await UniTask.Delay(System.TimeSpan.FromSeconds(5));
+        await UniTask.Delay(System.TimeSpan.FromSeconds(3));
 
         
 
