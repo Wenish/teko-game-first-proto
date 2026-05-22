@@ -189,43 +189,6 @@
 					margin-bottom: 20px;
 				" />
 
-			<ui:VisualElement
-				name="loading-track"
-				style="
-					width: 100%;
-					max-width: 300px;
-					height: 10px;
-					padding-left: 2px;
-					padding-right: 2px;
-					padding-top: 2px;
-					padding-bottom: 2px;
-					background-color: rgba(15, 24, 40, 0.82);
-					border-top-left-radius: 8px;
-					border-top-right-radius: 8px;
-					border-bottom-left-radius: 8px;
-					border-bottom-right-radius: 8px;
-					border-left-width: 1px;
-					border-right-width: 1px;
-					border-top-width: 1px;
-					border-bottom-width: 1px;
-					border-left-color: rgba(160, 212, 255, 0.24);
-					border-right-color: rgba(160, 212, 255, 0.24);
-					border-top-color: rgba(160, 212, 255, 0.24);
-					border-bottom-color: rgba(160, 212, 255, 0.24);
-				">
-				<ui:VisualElement
-					name="loading-fill"
-					style="
-						width: 54%;
-						height: 100%;
-						border-top-left-radius: 6px;
-						border-top-right-radius: 6px;
-						border-bottom-left-radius: 6px;
-						border-bottom-right-radius: 6px;
-						background-color: rgb(99, 224, 255);
-					" />
-			</ui:VisualElement>
-
 			<ui:Label
 				name="loading-hint"
 				text="Synchronizing systems..."
