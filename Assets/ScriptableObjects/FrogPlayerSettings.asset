@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b585a6887d1a26419fced26aa385d79, type: 3}
+  m_Name: FrogPlayerSettings
+  m_EditorClassIdentifier: Assembly-CSharp::FrogPlayerSettings
+  chargeCycleSeconds: 1.2
+  minUpwardJumpForce: 6
+  maxUpwardJumpForce: 14
+  directionalForceMultiplier: 0.9
+  directionDeadzone: 0.1
+  gravity: 40
+  fallGravityMultiplier: 2.2

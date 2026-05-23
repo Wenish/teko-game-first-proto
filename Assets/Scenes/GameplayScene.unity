@@ -153,6 +153,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 564759034}
+  _frogPlayerSettings: {fileID: 11400000, guid: e551c1b3c7f0b4e46aca6e15d36e8e07, type: 2}
 --- !u!4 &260144427
 Transform:
   m_ObjectHideFlags: 0
@@ -195,13 +196,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306642673}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19854368, y: -0, z: -0, w: 0.98009205}
-  m_LocalPosition: {x: 0, y: 3.57, z: -5.29}
+  m_LocalRotation: {x: 0.13692586, y: 0, z: 0, w: 0.99058133}
+  m_LocalPosition: {x: 0, y: 3.1, z: -3.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 677300930}
-  m_LocalEulerAnglesHint: {x: 22.904, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.74, y: 0, z: 0}
 --- !u!114 &306642675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -980,7 +981,7 @@ GameObject:
   - component: {fileID: 677300929}
   - component: {fileID: 677300928}
   - component: {fileID: 677300931}
-  - component: {fileID: 677300932}
+  - component: {fileID: 677300934}
   - component: {fileID: 677300933}
   m_Layer: 0
   m_Name: Player
@@ -1045,7 +1046,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677300926}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &677300930
 Transform:
   m_ObjectHideFlags: 0
@@ -1055,8 +1056,8 @@ Transform:
   m_GameObject: {fileID: 677300926}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 306642674}
@@ -1088,9 +1089,21 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!136 &677300932
-CapsuleCollider:
+  m_CollisionDetection: 1
+--- !u!114 &677300933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677300926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e4549ded9a8f74ea190069ab8065a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerFrogMovement
+--- !u!65 &677300934
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1107,23 +1120,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &677300933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677300926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15e4549ded9a8f74ea190069ab8065a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerFrogMovement
 --- !u!1 &728942128
 GameObject:
   m_ObjectHideFlags: 0
