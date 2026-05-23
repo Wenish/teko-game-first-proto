@@ -1,13 +1,9 @@
-using UnityEngine;
-
 public readonly struct FrogJumpReleasedEvent
 {
     public float ChargeNormalized { get; }
-    public Vector2 MoveInput { get; }
 
-    public FrogJumpReleasedEvent(float chargeNormalized, Vector2 moveInput)
+    public FrogJumpReleasedEvent(float chargeNormalized)
     {
         ChargeNormalized = chargeNormalized;
-        MoveInput = moveInput;
     }
 }

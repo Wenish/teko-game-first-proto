@@ -8,19 +8,27 @@ using VContainer;
 public class PlayerFrogMovement : MonoBehaviour
 {
 	private FrogPlayerSettings _settings;
+	private FrogInputStateService _inputStateService;
 	private FrogGroundStateService _groundStateService;
+	private IFrogChargeStateReader _frogChargeStateReader;
 	private Rigidbody _rigidbody;
 	private Collider _collider;
 	private IDisposable _jumpReleasedSubscription;
+	private Vector3 _airborneMoveDirection;
+	private bool _wasGrounded;
 
 	[Inject]
 	public void Construct(
 		FrogPlayerSettings settings,
+		FrogInputStateService inputStateService,
 		FrogGroundStateService groundStateService,
+		IFrogChargeStateReader frogChargeStateReader,
 		ISubscriber<FrogJumpReleasedEvent> jumpReleasedSubscriber)
 	{
 		_settings = settings;
+		_inputStateService = inputStateService;
 		_groundStateService = groundStateService;
+		_frogChargeStateReader = frogChargeStateReader;
 		_jumpReleasedSubscription = jumpReleasedSubscriber.Subscribe(OnJumpReleased);
 	}
 
@@ -29,12 +37,23 @@ public class PlayerFrogMovement : MonoBehaviour
 		_rigidbody = GetComponent<Rigidbody>();
 		_collider = GetComponent<Collider>();
 		_rigidbody.useGravity = false;
+		_airborneMoveDirection = GetPlanarDirection(transform.forward);
+		_wasGrounded = IsGrounded();
 	}
 
 	private void FixedUpdate()
 	{
-		_groundStateService.SetIsGrounded(IsGrounded());
+		bool isGrounded = IsGrounded();
+
+		if (!isGrounded && _wasGrounded)
+		{
+			_airborneMoveDirection = GetPlanarDirection(transform.forward);
+		}
+
+		_groundStateService.SetIsGrounded(isGrounded);
+		TickMovement(isGrounded);
 		ApplyCustomGravity();
+		_wasGrounded = isGrounded;
 	}
 
 	private void OnDestroy()
@@ -54,26 +73,86 @@ public class PlayerFrogMovement : MonoBehaviour
 			_settings.minUpwardJumpForce,
 			_settings.maxUpwardJumpForce,
 			clampedCharge);
-
-		Vector2 planarInput = e.MoveInput;
-		Vector3 planarDirection = new Vector3(planarInput.x, 0f, planarInput.y);
-
-		if (planarDirection.sqrMagnitude > (_settings.directionDeadzone * _settings.directionDeadzone))
-		{
-			planarDirection.Normalize();
-		}
-		else
-		{
-			planarDirection = Vector3.zero;
-		}
-
-		Vector3 directionalForce = planarDirection * (upwardForce * _settings.directionalForceMultiplier);
+		_airborneMoveDirection = GetPlanarDirection(transform.forward);
+		Vector3 directionalForce = _airborneMoveDirection * (upwardForce * _settings.directionalForceMultiplier);
 		Vector3 velocity = _rigidbody.linearVelocity;
 		velocity.y = 0f;
 		_rigidbody.linearVelocity = velocity;
 
 		Vector3 jumpImpulse = (Vector3.up * upwardForce) + directionalForce;
 		_rigidbody.AddForce(jumpImpulse, ForceMode.VelocityChange);
+	}
+
+	private void TickMovement(bool isGrounded)
+	{
+		bool isCharging = _frogChargeStateReader != null
+			&& _frogChargeStateReader.IsCharging.CurrentValue;
+
+		if (isGrounded && isCharging)
+		{
+			Vector3 velocity = _rigidbody.linearVelocity;
+			velocity.x = 0f;
+			velocity.z = 0f;
+			_rigidbody.linearVelocity = velocity;
+			return;
+		}
+
+		Vector2 moveInput = _inputStateService.MoveInput.CurrentValue;
+
+		float turnInput = moveInput.x;
+		float moveInputForward = moveInput.y;
+
+		if (Mathf.Abs(moveInputForward) < _settings.directionDeadzone)
+		{
+			moveInputForward = 0f;
+		}
+
+		if (Mathf.Abs(turnInput) < _settings.directionDeadzone)
+		{
+			turnInput = 0f;
+		}
+
+		if (!Mathf.Approximately(turnInput, 0f))
+		{
+			Quaternion deltaRotation = Quaternion.Euler(
+				0f,
+				turnInput * _settings.groundTurnSpeed * Time.fixedDeltaTime,
+				0f);
+			_rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
+		}
+
+		if (isGrounded)
+		{
+			Vector3 velocity = _rigidbody.linearVelocity;
+			Vector3 planarVelocity = transform.forward * (moveInputForward * _settings.groundMoveSpeed);
+			velocity.x = planarVelocity.x;
+			velocity.z = planarVelocity.z;
+			_rigidbody.linearVelocity = velocity;
+			return;
+		}
+
+		if (Mathf.Approximately(moveInputForward, 0f))
+		{
+			return;
+		}
+
+		_rigidbody.AddForce(
+			_airborneMoveDirection * (moveInputForward * _settings.airMoveAcceleration),
+			ForceMode.Acceleration);
+
+		Vector3 velocityAfterSteer = _rigidbody.linearVelocity;
+		Vector3 horizontalVelocity = new Vector3(velocityAfterSteer.x, 0f, velocityAfterSteer.z);
+
+		float maxAirSpeed = Mathf.Max(0f, _settings.airMaxMoveSpeed);
+		if (horizontalVelocity.sqrMagnitude <= (maxAirSpeed * maxAirSpeed))
+		{
+			return;
+		}
+
+		Vector3 clampedHorizontal = horizontalVelocity.normalized * maxAirSpeed;
+		velocityAfterSteer.x = clampedHorizontal.x;
+		velocityAfterSteer.z = clampedHorizontal.z;
+		_rigidbody.linearVelocity = velocityAfterSteer;
 	}
 
 	private void ApplyCustomGravity()
@@ -108,5 +187,23 @@ public class PlayerFrogMovement : MonoBehaviour
 			castDistance,
 			_settings.groundLayerMask,
 			QueryTriggerInteraction.Ignore);
+	}
+
+	private Vector3 GetPlanarDirection(Vector3 source)
+	{
+		Vector3 planar = new Vector3(source.x, 0f, source.z);
+		if (planar.sqrMagnitude > 0.0001f)
+		{
+			return planar.normalized;
+		}
+
+		Vector3 fallbackForward = transform.forward;
+		Vector3 fallbackPlanar = new Vector3(fallbackForward.x, 0f, fallbackForward.z);
+		if (fallbackPlanar.sqrMagnitude > 0.0001f)
+		{
+			return fallbackPlanar.normalized;
+		}
+
+		return Vector3.forward;
 	}
 }

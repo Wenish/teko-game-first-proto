@@ -3,6 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Frog Player Settings", fileName = "FrogPlayerSettings")]
 public class FrogPlayerSettings : ScriptableObject
 {
+    [Header("Movement")]
+    [Min(0f)] public float groundMoveSpeed = 6f;
+    [Min(0f)] public float groundTurnSpeed = 180f;
+    [Min(0f)] public float airMoveAcceleration = 22f;
+    [Min(0f)] public float airMaxMoveSpeed = 8f;
+
     [Header("Jump Charge")]
     [Min(0.05f)] public float chargeCycleSeconds = 1.2f;
 

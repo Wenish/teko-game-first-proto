@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b585a6887d1a26419fced26aa385d79, type: 3}
   m_Name: FrogPlayerSettings
   m_EditorClassIdentifier: Assembly-CSharp::FrogPlayerSettings
+  groundMoveSpeed: 3
+  groundTurnSpeed: 100
+  airMoveAcceleration: 22
+  airMaxMoveSpeed: 8
   chargeCycleSeconds: 1.2
   minUpwardJumpForce: 6
   maxUpwardJumpForce: 16

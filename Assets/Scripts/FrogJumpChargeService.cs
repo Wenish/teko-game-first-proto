@@ -88,8 +88,7 @@ public class FrogJumpChargeService : ITickable, IFrogChargeStateReader
     {
         _jumpReleasedPublisher.Publish(
             new FrogJumpReleasedEvent(
-                _chargeNormalized.CurrentValue,
-                _inputStateService.MoveInput.CurrentValue));
+                _chargeNormalized.CurrentValue));
     }
 
     private void ResetCharge()
