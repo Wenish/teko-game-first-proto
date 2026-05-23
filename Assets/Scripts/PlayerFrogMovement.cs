@@ -4,29 +4,36 @@ using MessagePipe;
 using VContainer;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class PlayerFrogMovement : MonoBehaviour
 {
 	private FrogPlayerSettings _settings;
+	private FrogGroundStateService _groundStateService;
 	private Rigidbody _rigidbody;
+	private Collider _collider;
 	private IDisposable _jumpReleasedSubscription;
 
 	[Inject]
 	public void Construct(
 		FrogPlayerSettings settings,
+		FrogGroundStateService groundStateService,
 		ISubscriber<FrogJumpReleasedEvent> jumpReleasedSubscriber)
 	{
 		_settings = settings;
+		_groundStateService = groundStateService;
 		_jumpReleasedSubscription = jumpReleasedSubscriber.Subscribe(OnJumpReleased);
 	}
 
 	private void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody>();
+		_collider = GetComponent<Collider>();
 		_rigidbody.useGravity = false;
 	}
 
 	private void FixedUpdate()
 	{
+		_groundStateService.SetIsGrounded(IsGrounded());
 		ApplyCustomGravity();
 	}
 
@@ -37,6 +44,11 @@ public class PlayerFrogMovement : MonoBehaviour
 
 	private void OnJumpReleased(FrogJumpReleasedEvent e)
 	{
+		if (!IsGrounded())
+		{
+			return;
+		}
+
 		float clampedCharge = Mathf.Clamp01(e.ChargeNormalized);
 		float upwardForce = Mathf.Lerp(
 			_settings.minUpwardJumpForce,
@@ -73,5 +85,28 @@ public class PlayerFrogMovement : MonoBehaviour
 		_rigidbody.AddForce(
 			Vector3.down * _settings.gravity * gravityMultiplier,
 			ForceMode.Acceleration);
+	}
+
+	private bool IsGrounded()
+	{
+		Vector3 boundsCenter = _collider.bounds.center;
+		Vector3 boundsExtents = _collider.bounds.extents;
+
+		Vector3 halfExtents = new Vector3(
+			boundsExtents.x * _settings.groundCheckRadiusScale,
+			0.01f,
+			boundsExtents.z * _settings.groundCheckRadiusScale);
+
+		float castDistance = boundsExtents.y + _settings.groundCheckDistance;
+
+		return Physics.BoxCast(
+			boundsCenter,
+			halfExtents,
+			Vector3.down,
+			out _,
+			Quaternion.identity,
+			castDistance,
+			_settings.groundLayerMask,
+			QueryTriggerInteraction.Ignore);
 	}
 }

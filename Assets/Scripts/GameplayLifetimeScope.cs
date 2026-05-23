@@ -20,6 +20,7 @@ public class GameplayLifetimeScope : LifetimeScope
         builder.Register<CoinStatisticsService>(Lifetime.Scoped);
         builder.Register<WinConditionService>(Lifetime.Scoped);
         builder.Register<FrogInputStateService>(Lifetime.Scoped);
+        builder.Register<FrogGroundStateService>(Lifetime.Scoped);
         builder.RegisterEntryPoint<FrogJumpChargeService>(Lifetime.Scoped).AsImplementedInterfaces();
 
         builder.RegisterBuildCallback(container =>

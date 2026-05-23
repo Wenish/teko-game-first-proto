@@ -14,8 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FrogPlayerSettings
   chargeCycleSeconds: 1.2
   minUpwardJumpForce: 6
-  maxUpwardJumpForce: 14
+  maxUpwardJumpForce: 16
   directionalForceMultiplier: 0.9
   directionDeadzone: 0.1
   gravity: 40
   fallGravityMultiplier: 2.2
+  groundCheckDistance: 0.1
+  groundCheckRadiusScale: 0.8
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295

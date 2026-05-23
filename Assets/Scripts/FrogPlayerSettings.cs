@@ -15,4 +15,9 @@ public class FrogPlayerSettings : ScriptableObject
     [Header("Gravity")]
     [Min(0f)] public float gravity = 30f;
     [Min(1f)] public float fallGravityMultiplier = 2.2f;
+
+    [Header("Ground Check")]
+    [Min(0.01f)] public float groundCheckDistance = 0.15f;
+    [Range(0.1f, 1f)] public float groundCheckRadiusScale = 0.9f;
+    public LayerMask groundLayerMask = ~0;
 }

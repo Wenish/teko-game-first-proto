@@ -10,6 +10,7 @@ public class FrogJumpChargeService : ITickable, IFrogChargeStateReader
 
     private readonly FrogPlayerSettings _settings;
     private readonly FrogInputStateService _inputStateService;
+    private readonly FrogGroundStateService _groundStateService;
     private readonly IPublisher<FrogJumpReleasedEvent> _jumpReleasedPublisher;
 
     private readonly ReactiveProperty<float> _chargeNormalized = new(0f);
@@ -27,22 +28,25 @@ public class FrogJumpChargeService : ITickable, IFrogChargeStateReader
     public FrogJumpChargeService(
         FrogPlayerSettings settings,
         FrogInputStateService inputStateService,
+        FrogGroundStateService groundStateService,
         IPublisher<FrogJumpReleasedEvent> jumpReleasedPublisher)
     {
         _settings = settings;
         _inputStateService = inputStateService;
+        _groundStateService = groundStateService;
         _jumpReleasedPublisher = jumpReleasedPublisher;
     }
 
     public void Tick()
     {
         bool isJumpPressed = _inputStateService.IsJumpPressed.CurrentValue;
+        bool isGrounded = _groundStateService.IsGrounded.CurrentValue;
 
-        if (isJumpPressed)
+        if (isJumpPressed && (isGrounded || _isCharging.CurrentValue))
         {
             TickCharge();
         }
-        else if (_wasJumpPressed)
+        else if (_wasJumpPressed && _isCharging.CurrentValue)
         {
             PublishJumpRelease();
             ResetCharge();
