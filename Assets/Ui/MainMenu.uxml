@@ -93,7 +93,7 @@
 
 			<ui:Label
 				name="menu-title"
-				text="Main Menu"
+				text="Frog Jumps To Space"
 				style="
 					color: rgb(241, 255, 243);
 					font-size: 42px;
@@ -144,6 +144,31 @@
 					font-size: 24px;
 					unity-font-style: bold;
 					letter-spacing: 1.2px;
+					margin-bottom: 14px;
+				" />
+
+			<ui:Button
+				name="quit-button"
+				text="Quit"
+				style="
+					height: 52px;
+					border-top-left-radius: 16px;
+					border-top-right-radius: 16px;
+					border-bottom-left-radius: 16px;
+					border-bottom-right-radius: 16px;
+					border-left-width: 1px;
+					border-right-width: 1px;
+					border-top-width: 1px;
+					border-bottom-width: 1px;
+					border-left-color: rgba(229, 255, 191, 0.26);
+					border-right-color: rgba(229, 255, 191, 0.26);
+					border-top-color: rgba(229, 255, 191, 0.26);
+					border-bottom-color: rgba(229, 255, 191, 0.26);
+					background-color: rgb(57, 89, 52);
+					color: rgb(230, 244, 227);
+					font-size: 20px;
+					unity-font-style: bold;
+					letter-spacing: 1px;
 					margin-bottom: 14px;
 				" />
 
