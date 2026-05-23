@@ -20,7 +20,6 @@ public class GameHudView : MonoBehaviour
     private Label _coinLabel;
     private Label _lifetimeCoinLabel;
     private Label _winLabel;
-    private Label _chargeDirectionLabel;
 
     [Inject]
     public void Construct(
@@ -45,13 +44,6 @@ public class GameHudView : MonoBehaviour
         _coinLabel = root.Q<Label>("coin-label");
         _lifetimeCoinLabel = root.Q<Label>("lifetime-coin-label");
         _winLabel = root.Q<Label>("win-label");
-        _chargeDirectionLabel = root.Q<Label>("frog-charge-direction-label");
-
-        if (_chargeDirectionLabel == null)
-        {
-            _chargeDirectionLabel = new Label { name = "frog-charge-direction-label" };
-            root.Add(_chargeDirectionLabel);
-        }
 
         ApplySafeAreaToHud();
         if (_winLabel != null)
@@ -106,18 +98,12 @@ public class GameHudView : MonoBehaviour
             return;
         }
 
-        UpdateChargeFill(_frogChargeStateReader.ChargeNormalized.CurrentValue);
-        UpdateChargeDirectionLabel(
-            _frogChargeStateReader.IsCharging.CurrentValue,
-            _frogChargeStateReader.IsChargeAscending.CurrentValue);
-
         _frogChargeStateReader.ChargeNormalized
             .Subscribe(UpdateChargeFill)
             .AddTo(this);
 
         _frogChargeStateReader.IsCharging
-            .CombineLatest(_frogChargeStateReader.IsChargeAscending, (isCharging, isAscending) => (isCharging, isAscending))
-            .Subscribe(state => UpdateChargeDirectionLabel(state.isCharging, state.isAscending))
+            .Subscribe(UpdateChargeVisibility)
             .AddTo(this);
     }
 
@@ -150,35 +136,23 @@ public class GameHudView : MonoBehaviour
 
     private void UpdateChargeFill(float chargeNormalized)
     {
-        Debug.Log($"Updating charge fill: {chargeNormalized}");
         if (_chargeFill == null)
         {
             return;
         }
 
-
         float percent = Mathf.Clamp01(chargeNormalized) * 100f;
         _chargeFill.style.width = new Length(percent, LengthUnit.Percent);
     }
 
-    private void UpdateChargeDirectionLabel(bool isCharging, bool isAscending)
+    private void UpdateChargeVisibility(bool isCharging)
     {
-
-        Debug.Log($"Updating charge direction label: isCharging={isCharging}, isAscending={isAscending}");
-        if (_chargeDirectionLabel == null)
+        if (_chargeAnchor == null)
         {
             return;
         }
 
-        if (!isCharging)
-        {
-            _chargeDirectionLabel.text = "Charge: idle";
-            return;
-        }
-
-        _chargeDirectionLabel.text = isAscending
-            ? "Charge: rising"
-            : "Charge: falling";
+        _chargeAnchor.style.display = isCharging ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     private void ApplySafeAreaToHud()
