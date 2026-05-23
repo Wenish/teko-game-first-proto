@@ -79,6 +79,69 @@
                 " />
         </ui:VisualElement>
 
+        <ui:VisualElement
+            name="charge-anchor"
+            style="
+                position: absolute;
+                left: 18px;
+                bottom: 16px;
+                width: 280px;
+                background-color: rgba(12, 30, 18, 0.92);
+                border-top-left-radius: 14px;
+                border-top-right-radius: 14px;
+                border-bottom-left-radius: 14px;
+                border-bottom-right-radius: 14px;
+                border-left-width: 1px;
+                border-right-width: 1px;
+                border-top-width: 1px;
+                border-bottom-width: 1px;
+                border-left-color: rgba(123, 255, 170, 0.74);
+                border-right-color: rgba(123, 255, 170, 0.74);
+                border-top-color: rgba(123, 255, 170, 0.74);
+                border-bottom-color: rgba(123, 255, 170, 0.74);
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            ">
+            <ui:Label
+                name="frog-charge-title-label"
+                text="Jump Charge"
+                style="
+                    color: rgb(227, 255, 231);
+                    unity-font-style: bold;
+                    font-size: 14px;
+                    margin-bottom: 6px;
+                " />
+            <ui:VisualElement
+                name="frog-charge-track"
+                style="
+                    height: 14px;
+                    background-color: rgba(7, 18, 11, 0.95);
+                    border-top-left-radius: 7px;
+                    border-top-right-radius: 7px;
+                    border-bottom-left-radius: 7px;
+                    border-bottom-right-radius: 7px;
+                    overflow: hidden;
+                ">
+                <ui:VisualElement
+                    name="frog-charge-fill"
+                    style="
+                        width: 0%;
+                        height: 100%;
+                        background-color: rgb(133, 255, 139);
+                    " />
+            </ui:VisualElement>
+            <ui:Label
+                name="frog-charge-direction-label"
+                text="idle"
+                style="
+                    margin-top: 6px;
+                    color: rgb(214, 255, 218);
+                    font-size: 12px;
+                " />
+        </ui:VisualElement>
+
         <ui:Label
             name="win-label"
             text="You win!"

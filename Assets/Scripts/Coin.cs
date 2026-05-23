@@ -16,7 +16,7 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.TryGetComponent<PlayerMovement>(out _))
+        if (!other.CompareTag("Player"))
             return;
 
         _coinCollectedPublisher.Publish(new CoinCollectedEvent(value));
