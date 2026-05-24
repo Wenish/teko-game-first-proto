@@ -10,6 +10,7 @@ public class GameTimerService : IDisposable
 
     private readonly IDisposable _moveInputSubscription;
     private readonly IDisposable _jumpInputSubscription;
+    private readonly IDisposable _mouseTurnInputSubscription;
     private readonly IDisposable _winConditionSubscription;
 
     private readonly ReactiveProperty<float> _elapsedSeconds = new(0f);
@@ -34,6 +35,7 @@ public class GameTimerService : IDisposable
 
         _moveInputSubscription = frogInputStateService.MoveInput.Subscribe(OnMoveInputChanged);
         _jumpInputSubscription = frogInputStateService.IsJumpPressed.Subscribe(OnJumpInputChanged);
+        _mouseTurnInputSubscription = frogInputStateService.MouseTurnInput.Subscribe(OnMouseTurnInputChanged);
         _winConditionSubscription = winConditionService.HasWon.Subscribe(OnWinConditionChanged);
     }
 
@@ -51,6 +53,7 @@ public class GameTimerService : IDisposable
     {
         _moveInputSubscription.Dispose();
         _jumpInputSubscription.Dispose();
+        _mouseTurnInputSubscription.Dispose();
         _winConditionSubscription.Dispose();
         _elapsedSeconds.Dispose();
         _bestTimeSeconds.Dispose();
@@ -67,6 +70,14 @@ public class GameTimerService : IDisposable
     private void OnJumpInputChanged(bool isJumpPressed)
     {
         if (isJumpPressed)
+        {
+            StartTimerIfNeeded();
+        }
+    }
+
+    private void OnMouseTurnInputChanged(float mouseTurnInput)
+    {
+        if (!Mathf.Approximately(mouseTurnInput, 0f))
         {
             StartTimerIfNeeded();
         }

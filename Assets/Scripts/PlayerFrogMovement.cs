@@ -98,6 +98,7 @@ public class PlayerFrogMovement : MonoBehaviour
 		}
 
 		Vector2 moveInput = _inputStateService.MoveInput.CurrentValue;
+		float mouseTurnInput = _inputStateService.MouseTurnInput.CurrentValue;
 
 		float turnInput = moveInput.x;
 		float moveInputForward = moveInput.y;
@@ -112,11 +113,14 @@ public class PlayerFrogMovement : MonoBehaviour
 			turnInput = 0f;
 		}
 
-		if (!Mathf.Approximately(turnInput, 0f))
+		float turnDegrees = (turnInput * _settings.groundTurnSpeed * Time.fixedDeltaTime)
+			+ (mouseTurnInput * GetMouseTurnSensitivity());
+
+		if (!Mathf.Approximately(turnDegrees, 0f))
 		{
 			Quaternion deltaRotation = Quaternion.Euler(
 				0f,
-				turnInput * _settings.groundTurnSpeed * Time.fixedDeltaTime,
+				turnDegrees,
 				0f);
 			_rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
 		}
@@ -164,6 +168,11 @@ public class PlayerFrogMovement : MonoBehaviour
 		_rigidbody.AddForce(
 			Vector3.down * _settings.gravity * gravityMultiplier,
 			ForceMode.Acceleration);
+	}
+
+	private float GetMouseTurnSensitivity()
+	{
+		return _settings.mouseTurnSensitivity;
 	}
 
 	private bool IsGrounded()
