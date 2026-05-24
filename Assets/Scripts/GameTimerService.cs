@@ -16,6 +16,7 @@ public class GameTimerService : IDisposable
     private readonly ReactiveProperty<float> _bestTimeSeconds;
 
     private bool _isRunning;
+    private bool _isFinished;
 
     public ReadOnlyReactiveProperty<float> ElapsedSeconds => _elapsedSeconds;
     public ReadOnlyReactiveProperty<float> BestTimeSeconds => _bestTimeSeconds;
@@ -78,6 +79,13 @@ public class GameTimerService : IDisposable
             return;
         }
 
+        if (_isFinished)
+        {
+            return;
+        }
+
+        _isFinished = true;
+
         if (!_isRunning)
         {
             return;
@@ -101,7 +109,7 @@ public class GameTimerService : IDisposable
 
     private void StartTimerIfNeeded()
     {
-        if (_isRunning)
+        if (_isRunning || _isFinished)
         {
             return;
         }
