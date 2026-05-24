@@ -36,6 +36,9 @@ public class MainMenuView : MonoBehaviour
         if (_playButton != null)
         {
             _playButton.clicked += OnPlayButtonClicked;
+
+            // Delay one frame so the element is attached to panel before focusing.
+            root.schedule.Execute(() => _playButton.Focus()).ExecuteLater(0);
         }
 
         if (_quitButton != null)
