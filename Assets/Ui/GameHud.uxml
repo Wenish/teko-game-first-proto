@@ -77,6 +77,64 @@
                     -unity-text-align: middle-left;
                     min-width: 148px;
                 " />
+            <ui:Label
+                name="timer-label"
+                text="Time: 00:00.00"
+                style="
+                    margin-left: 10px;
+                    color: rgb(231, 251, 255);
+                    background-color: rgba(11, 27, 34, 0.92);
+                    border-top-left-radius: 14px;
+                    border-top-right-radius: 14px;
+                    border-bottom-left-radius: 14px;
+                    border-bottom-right-radius: 14px;
+                    border-left-width: 1px;
+                    border-right-width: 1px;
+                    border-top-width: 1px;
+                    border-bottom-width: 1px;
+                    border-left-color: rgba(145, 229, 255, 0.72);
+                    border-right-color: rgba(145, 229, 255, 0.72);
+                    border-top-color: rgba(145, 229, 255, 0.72);
+                    border-bottom-color: rgba(145, 229, 255, 0.72);
+                    padding-left: 14px;
+                    padding-right: 14px;
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                    unity-font-style: bold;
+                    font-size: 18px;
+                    letter-spacing: 0.6px;
+                    -unity-text-align: middle-left;
+                    min-width: 144px;
+                " />
+            <ui:Label
+                name="best-time-label"
+                text="Best: --:--.--"
+                style="
+                    margin-left: 10px;
+                    color: rgb(244, 244, 255);
+                    background-color: rgba(23, 17, 36, 0.92);
+                    border-top-left-radius: 14px;
+                    border-top-right-radius: 14px;
+                    border-bottom-left-radius: 14px;
+                    border-bottom-right-radius: 14px;
+                    border-left-width: 1px;
+                    border-right-width: 1px;
+                    border-top-width: 1px;
+                    border-bottom-width: 1px;
+                    border-left-color: rgba(203, 170, 255, 0.72);
+                    border-right-color: rgba(203, 170, 255, 0.72);
+                    border-top-color: rgba(203, 170, 255, 0.72);
+                    border-bottom-color: rgba(203, 170, 255, 0.72);
+                    padding-left: 14px;
+                    padding-right: 14px;
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                    unity-font-style: bold;
+                    font-size: 18px;
+                    letter-spacing: 0.6px;
+                    -unity-text-align: middle-left;
+                    min-width: 144px;
+                " />
         </ui:VisualElement>
 
         <ui:VisualElement

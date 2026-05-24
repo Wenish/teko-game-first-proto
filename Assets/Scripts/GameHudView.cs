@@ -1,4 +1,5 @@
 using R3;
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VContainer;
@@ -11,6 +12,7 @@ public class GameHudView : MonoBehaviour
 
     private CoinService _coinService;
     private CoinStatisticsService _coinStatisticsService;
+    private GameTimerService _gameTimerService;
     private WinConditionService _winConditionService;
     private IFrogChargeStateReader _frogChargeStateReader;
 
@@ -19,17 +21,21 @@ public class GameHudView : MonoBehaviour
     private VisualElement _chargeFill;
     private Label _coinLabel;
     private Label _lifetimeCoinLabel;
+    private Label _timerLabel;
+    private Label _bestTimeLabel;
     private Label _winLabel;
 
     [Inject]
     public void Construct(
         CoinService coinService,
         CoinStatisticsService coinStatisticsService,
+        GameTimerService gameTimerService,
         WinConditionService winConditionService,
         IFrogChargeStateReader frogChargeStateReader)
     {
         _coinService = coinService;
         _coinStatisticsService = coinStatisticsService;
+        _gameTimerService = gameTimerService;
         _winConditionService = winConditionService;
         _frogChargeStateReader = frogChargeStateReader;
     }
@@ -43,6 +49,8 @@ public class GameHudView : MonoBehaviour
         _chargeFill = root.Q<VisualElement>("frog-charge-fill");
         _coinLabel = root.Q<Label>("coin-label");
         _lifetimeCoinLabel = root.Q<Label>("lifetime-coin-label");
+        _timerLabel = root.Q<Label>("timer-label");
+        _bestTimeLabel = root.Q<Label>("best-time-label");
         _winLabel = root.Q<Label>("win-label");
 
         ApplySafeAreaToHud();
@@ -92,6 +100,21 @@ public class GameHudView : MonoBehaviour
             Debug.LogWarning("GameHudView missing WinConditionService injection.");
         }
 
+        if (_gameTimerService != null)
+        {
+            _gameTimerService.ElapsedSeconds
+                .Subscribe(UpdateTimerLabel)
+                .AddTo(this);
+
+            _gameTimerService.BestTimeSeconds
+                .Subscribe(UpdateBestTimeLabel)
+                .AddTo(this);
+        }
+        else
+        {
+            Debug.LogWarning("GameHudView missing GameTimerService injection.");
+        }
+
         if (_frogChargeStateReader == null)
         {
             Debug.LogError("GameHudView missing IFrogChargeStateReader injection.");
@@ -132,6 +155,34 @@ public class GameHudView : MonoBehaviour
                     ? DisplayStyle.Flex
                     : DisplayStyle.None;
         }
+    }
+
+    private void UpdateTimerLabel(float elapsedSeconds)
+    {
+        if (_timerLabel != null)
+        {
+            _timerLabel.text = $"Time: {FormatTime(elapsedSeconds)}";
+        }
+    }
+
+    private void UpdateBestTimeLabel(float bestTimeSeconds)
+    {
+        if (_bestTimeLabel == null)
+        {
+            return;
+        }
+
+        _bestTimeLabel.text =
+            bestTimeSeconds >= 0f
+                ? $"Best: {FormatTime(bestTimeSeconds)}"
+                : "Best: --:--.--";
+    }
+
+    private static string FormatTime(float seconds)
+    {
+        var clampedSeconds = Mathf.Max(0f, seconds);
+        var span = TimeSpan.FromSeconds(clampedSeconds);
+        return $"{(int)span.TotalMinutes:00}:{span.Seconds:00}.{span.Milliseconds / 10:00}";
     }
 
     private void UpdateChargeFill(float chargeNormalized)

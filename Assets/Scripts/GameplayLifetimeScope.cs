@@ -18,9 +18,11 @@ public class GameplayLifetimeScope : LifetimeScope
 
         builder.Register<CoinService>(Lifetime.Scoped);
         builder.Register<CoinStatisticsService>(Lifetime.Scoped);
+        builder.Register<GameTimerService>(Lifetime.Scoped);
         builder.Register<WinConditionService>(Lifetime.Scoped);
         builder.Register<FrogInputStateService>(Lifetime.Scoped);
         builder.Register<FrogGroundStateService>(Lifetime.Scoped);
+        builder.RegisterEntryPoint<GameTimerTickEntryPoint>(Lifetime.Scoped).AsImplementedInterfaces();
         builder.RegisterEntryPoint<EscapeToMenuService>(Lifetime.Scoped).AsImplementedInterfaces();
         builder.RegisterEntryPoint<FrogJumpChargeService>(Lifetime.Scoped).AsImplementedInterfaces();
 
