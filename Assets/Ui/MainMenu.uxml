@@ -56,7 +56,7 @@
 		<ui:VisualElement
 			name="menu-card"
 			style="
-				width: 420px;
+				width: 580px;
 				max-width: 86%;
 				min-height: 300px;
 				padding-left: 28px;
@@ -80,18 +80,6 @@
 					border-bottom-color: rgba(178, 255, 198, 0.34);
 			">
 			<ui:Label
-				name="menu-kicker"
-				text="TEKO PROTOTYPE"
-				style="
-					color: rgba(200, 255, 205, 0.95);
-					font-size: 13px;
-					unity-font-style: bold;
-					letter-spacing: 2.8px;
-					-unity-text-align: middle-center;
-					margin-bottom: 10px;
-				" />
-
-			<ui:Label
 				name="menu-title"
 				text="Frog Jumps To Space"
 				style="
@@ -104,7 +92,7 @@
 
 			<ui:Label
 				name="menu-subtitle"
-				text="Jump back in and see how long you can keep the run alive."
+				text="Jump with the frog to space."
 				style="
 					color: rgba(206, 235, 210, 0.88);
 					font-size: 15px;
