@@ -90,6 +90,8 @@ public class PlayerFrogMovement : MonoBehaviour
 
 		if (isGrounded && isCharging)
 		{
+			_inputStateService.ConsumeMouseTurnInput();
+
 			Vector3 velocity = _rigidbody.linearVelocity;
 			velocity.x = 0f;
 			velocity.z = 0f;
