@@ -8,7 +8,7 @@ public class GhostRunService : IStartable, IFixedTickable, IDisposable
     private const string BestRunRecordingKey = "best_run_recording_v1";
     private const string BaseColorProperty = "_BaseColor";
     private const string ColorProperty = "_Color";
-    private static readonly Color GhostColor = new(0f, 0.85f, 0.85f, 0.75f);
+    private static readonly Color GhostColor = new(0f, 0.85f, 0.85f, 0.45f);
 
     private readonly GameTimerService _gameTimerService;
     private readonly FrogInputStateService _inputStateService;
