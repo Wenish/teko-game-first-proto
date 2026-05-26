@@ -7,7 +7,8 @@ public class UIDocumentConfig : ScriptableObject
     public enum UIType
     {
         MainMenu,
-        LoadingScreen
+        LoadingScreen,
+        GameHud,
     }
     
     public PanelSettings PanelSettings;
