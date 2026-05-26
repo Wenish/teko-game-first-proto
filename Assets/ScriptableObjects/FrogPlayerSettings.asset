@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FrogPlayerSettings
   groundMoveSpeed: 3
   groundTurnSpeed: 100
+  mouseTurnSensitivity: 0.3
+  mouseTurnMultiplier: 0.1
+  mouseTurnInputDeadzone: 0.01
   airMoveAcceleration: 22
   airMaxMoveSpeed: 8
   chargeCycleSeconds: 1.2

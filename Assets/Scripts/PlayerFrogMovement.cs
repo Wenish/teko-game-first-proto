@@ -179,7 +179,7 @@ public class PlayerFrogMovement : MonoBehaviour
 
 	private float GetMouseTurnSensitivity()
 	{
-		return _settings.mouseTurnSensitivity * _settings.mouseTurnMultiplier;
+		return _settings.mouseTurnSensitivity * _settings.RuntimeMouseTurnMultiplier;
 	}
 
 	private bool IsGrounded()
