@@ -7,6 +7,9 @@ public class GameplayLifetimeScope : LifetimeScope
     [SerializeField]
     private FrogPlayerSettings _frogPlayerSettings;
 
+    [SerializeField]
+    private CameraOrbitSettings _cameraOrbitSettings;
+
     protected override void Configure(IContainerBuilder builder)
     {
         if (_frogPlayerSettings == null)
@@ -14,7 +17,13 @@ public class GameplayLifetimeScope : LifetimeScope
             _frogPlayerSettings = ScriptableObject.CreateInstance<FrogPlayerSettings>();
         }
 
+        if (_cameraOrbitSettings == null)
+        {
+            _cameraOrbitSettings = ScriptableObject.CreateInstance<CameraOrbitSettings>();
+        }
+
         builder.RegisterInstance(_frogPlayerSettings);
+        builder.RegisterInstance(_cameraOrbitSettings);
 
         builder.Register<CoinService>(Lifetime.Scoped);
         builder.Register<CoinStatisticsService>(Lifetime.Scoped);
@@ -22,6 +31,7 @@ public class GameplayLifetimeScope : LifetimeScope
         builder.Register<WinConditionService>(Lifetime.Scoped);
         builder.Register<FrogInputStateService>(Lifetime.Scoped);
         builder.Register<FrogGroundStateService>(Lifetime.Scoped);
+        builder.Register<CameraOrbitInputService>(Lifetime.Scoped);
         builder.RegisterEntryPoint<GameTimerTickEntryPoint>(Lifetime.Scoped).AsImplementedInterfaces();
         builder.RegisterEntryPoint<EscapeToMenuService>(Lifetime.Scoped).AsImplementedInterfaces();
         builder.RegisterEntryPoint<FrogJumpChargeService>(Lifetime.Scoped).AsImplementedInterfaces();
@@ -33,6 +43,7 @@ public class GameplayLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<PlayerInputManager>();
         builder.RegisterComponentInHierarchy<PlayerFrogMovement>();
+        builder.RegisterComponentInHierarchy<CameraOrbitView>();
         builder.RegisterComponentInHierarchy<DebugCoinView>();
         builder.RegisterComponentInHierarchy<GameHudView>();
     }

@@ -5,12 +5,16 @@ using VContainer;
 public class PlayerInputManager : MonoBehaviour
 {
 	private FrogInputStateService _frogInputStateService;
+	private CameraOrbitInputService _cameraOrbitInputService;
 	private Vector2 _lookInput;
 
 	[Inject]
-	public void Construct(FrogInputStateService frogInputStateService)
+	public void Construct(
+		FrogInputStateService frogInputStateService,
+		CameraOrbitInputService cameraOrbitInputService)
 	{
 		_frogInputStateService = frogInputStateService;
+		_cameraOrbitInputService = cameraOrbitInputService;
 	}
 
 	public void OnMove(InputValue value)
@@ -30,7 +34,7 @@ public class PlayerInputManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (_frogInputStateService == null)
+		if (_frogInputStateService == null || _cameraOrbitInputService == null)
 		{
 			return;
 		}
@@ -38,6 +42,14 @@ public class PlayerInputManager : MonoBehaviour
 		float mouseTurnInput = 0f;
 		if (Mouse.current != null)
 		{
+			bool isLeftMousePressed = Mouse.current.leftButton.isPressed;
+			_cameraOrbitInputService.SetOrbitPressed(isLeftMousePressed);
+
+			if (isLeftMousePressed)
+			{
+				_cameraOrbitInputService.AddOrbitLookInput(_lookInput);
+			}
+
 			bool isRightMousePressed = Mouse.current.rightButton.isPressed;
 			if (isRightMousePressed)
 			{
@@ -51,6 +63,7 @@ public class PlayerInputManager : MonoBehaviour
 		}
 		else
 		{
+			_cameraOrbitInputService.SetOrbitPressed(false);
 			mouseTurnInput = _lookInput.x;
 		}
 
