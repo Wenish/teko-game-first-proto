@@ -2,7 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(
     fileName = "CameraOrbitSettings",
-    menuName = "Settings/Camera Orbit Settings")]
+    menuName = "Game/Settings/Camera Orbit Settings")]
 public class CameraOrbitSettings : ScriptableObject
 {
     [Min(0.1f)] public float distance = 7f;

@@ -154,7 +154,7 @@ MonoBehaviour:
   autoInjectGameObjects:
   - {fileID: 564759034}
   _frogPlayerSettings: {fileID: 11400000, guid: e551c1b3c7f0b4e46aca6e15d36e8e07, type: 2}
-  _cameraOrbitSettings: {fileID: 0}
+  _cameraOrbitSettings: {fileID: 11400000, guid: 5dc0c5830a5da0346a053e00c77cf622, type: 2}
 --- !u!4 &260144427
 Transform:
   m_ObjectHideFlags: 0
