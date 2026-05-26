@@ -34,6 +34,12 @@ public class PlayerFrogMovement : MonoBehaviour
 
 	private void Awake()
 	{
+		if (_settings == null)
+		{
+			enabled = false;
+			return;
+		}
+
 		_rigidbody = GetComponent<Rigidbody>();
 		_collider = GetComponent<Collider>();
 		_rigidbody.interpolation = RigidbodyInterpolation.Interpolate;

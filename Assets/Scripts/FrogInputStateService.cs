@@ -45,4 +45,9 @@ public class FrogInputStateService
         _mouseTurnAccumulator = 0f;
         return consumedInput;
     }
+
+    public float PeekMouseTurnInput()
+    {
+        return _mouseTurnAccumulator;
+    }
 }

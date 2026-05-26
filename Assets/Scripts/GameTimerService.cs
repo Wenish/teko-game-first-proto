@@ -19,6 +19,9 @@ public class GameTimerService : IDisposable
     private bool _isRunning;
     private bool _isFinished;
 
+    public event Action RunStarted;
+    public event Action<RunCompletionResult> RunCompleted;
+
     public ReadOnlyReactiveProperty<float> ElapsedSeconds => _elapsedSeconds;
     public ReadOnlyReactiveProperty<float> BestTimeSeconds => _bestTimeSeconds;
 
@@ -107,15 +110,16 @@ public class GameTimerService : IDisposable
         var finalTime = _elapsedSeconds.CurrentValue;
         var currentBestTime = _bestTimeSeconds.CurrentValue;
         bool isFirstTime = currentBestTime < 0f;
+        bool isNewBest = isFirstTime || finalTime < currentBestTime;
 
-        if (!isFirstTime && finalTime >= currentBestTime)
+        if (isNewBest)
         {
-            return;
+            _bestTimeSeconds.Value = finalTime;
+            PlayerPrefs.SetFloat(BestTimeSecondsKey, finalTime);
+            PlayerPrefs.Save();
         }
 
-        _bestTimeSeconds.Value = finalTime;
-        PlayerPrefs.SetFloat(BestTimeSecondsKey, finalTime);
-        PlayerPrefs.Save();
+        RunCompleted?.Invoke(new RunCompletionResult(finalTime, isNewBest));
     }
 
     private void StartTimerIfNeeded()
@@ -126,6 +130,19 @@ public class GameTimerService : IDisposable
         }
 
         _isRunning = true;
+        RunStarted?.Invoke();
+    }
+}
+
+public readonly struct RunCompletionResult
+{
+    public readonly float FinalTimeSeconds;
+    public readonly bool IsNewBest;
+
+    public RunCompletionResult(float finalTimeSeconds, bool isNewBest)
+    {
+        FinalTimeSeconds = finalTimeSeconds;
+        IsNewBest = isNewBest;
     }
 }
 

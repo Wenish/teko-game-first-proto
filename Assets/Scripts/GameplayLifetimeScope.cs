@@ -35,6 +35,7 @@ public class GameplayLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<GameTimerTickEntryPoint>(Lifetime.Scoped).AsImplementedInterfaces();
         builder.RegisterEntryPoint<EscapeToMenuService>(Lifetime.Scoped).AsImplementedInterfaces();
         builder.RegisterEntryPoint<FrogJumpChargeService>(Lifetime.Scoped).AsImplementedInterfaces();
+        builder.RegisterEntryPoint<GhostRunService>(Lifetime.Scoped).AsImplementedInterfaces();
 
         builder.RegisterBuildCallback(container =>
         {
