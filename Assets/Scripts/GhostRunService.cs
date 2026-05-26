@@ -35,10 +35,22 @@ public class GhostRunService : IStartable, IFixedTickable, IDisposable
     public void Start()
     {
         _persistedRecording = LoadRecording();
+        CleanupAndAdoptExistingGhost();
 
         if (HasPlayableRecording(_persistedRecording))
         {
-            CreateGhostObject();
+            if (_ghostObject == null)
+            {
+                CreateGhostObject();
+            }
+            else
+            {
+                _ghostObject.SetActive(false);
+            }
+        }
+        else
+        {
+            DestroyGhostObject();
         }
 
         _gameTimerService.RunStarted += OnRunStarted;
@@ -63,11 +75,7 @@ public class GhostRunService : IStartable, IFixedTickable, IDisposable
         _gameTimerService.RunStarted -= OnRunStarted;
         _gameTimerService.RunCompleted -= OnRunCompleted;
 
-        if (_ghostObject != null)
-        {
-            UnityEngine.Object.Destroy(_ghostObject);
-            _ghostObject = null;
-        }
+        DestroyGhostObject();
     }
 
     private void OnRunStarted()
@@ -191,8 +199,15 @@ public class GhostRunService : IStartable, IFixedTickable, IDisposable
             return;
         }
 
+        CleanupAndAdoptExistingGhost();
+        if (_ghostObject != null)
+        {
+            return;
+        }
+
         _ghostObject = UnityEngine.Object.Instantiate(_playerFrogMovement.gameObject);
         _ghostObject.name = "GhostRunner";
+        _ghostObject.AddComponent<GhostRunnerMarker>();
 
         foreach (var behaviour in _ghostObject.GetComponentsInChildren<Behaviour>(true))
         {
@@ -215,6 +230,47 @@ public class GhostRunService : IStartable, IFixedTickable, IDisposable
 
         ApplyGhostVisualStyle(_ghostObject);
         _ghostObject.SetActive(false);
+    }
+
+    private void CleanupAndAdoptExistingGhost()
+    {
+        GhostRunnerMarker[] markers = UnityEngine.Object.FindObjectsByType<GhostRunnerMarker>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None);
+
+        GameObject firstFoundGhost = null;
+        for (int i = 0; i < markers.Length; i++)
+        {
+            if (markers[i] == null)
+            {
+                continue;
+            }
+
+            GameObject ghost = markers[i].gameObject;
+            if (firstFoundGhost == null)
+            {
+                firstFoundGhost = ghost;
+                continue;
+            }
+
+            UnityEngine.Object.Destroy(ghost);
+        }
+
+        if (firstFoundGhost != null)
+        {
+            _ghostObject = firstFoundGhost;
+        }
+    }
+
+    private void DestroyGhostObject()
+    {
+        if (_ghostObject == null)
+        {
+            return;
+        }
+
+        UnityEngine.Object.Destroy(_ghostObject);
+        _ghostObject = null;
     }
 
     private static void ApplyGhostVisualStyle(GameObject ghostObject)
@@ -315,4 +371,8 @@ public struct GhostRunFrameData
     public float rotY;
     public float rotZ;
     public float rotW;
+}
+
+public class GhostRunnerMarker : MonoBehaviour
+{
 }
