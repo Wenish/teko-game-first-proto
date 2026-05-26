@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d49c6f2e304b4a75a52be6d13ec8a07, type: 3}
   m_Name: CameraOrbitSettings
   m_EditorClassIdentifier: Assembly-CSharp::CameraOrbitSettings
-  distance: 7
-  targetOffset: {x: 0, y: 1.5, z: 0}
+  distance: 4
+  targetOffset: {x: 0, y: 1, z: 0}
   orbitYawSpeed: 0.15
   orbitPitchSpeed: 0.1
-  minPitch: -25
-  maxPitch: 55
+  minPitch: 0
+  maxPitch: 50
   defaultPitch: 18
   returnYawSpeed: 360
   returnPitchSpeed: 360
