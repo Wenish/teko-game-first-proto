@@ -82,13 +82,14 @@ public class CameraOrbitView : MonoBehaviour
             return;
         }
 
-        Vector3 planarToCamera = new Vector3(toCamera.x, 0f, toCamera.z);
-        _yaw = planarToCamera.sqrMagnitude > 0.0001f
-            ? Mathf.Atan2(planarToCamera.x, planarToCamera.z) * Mathf.Rad2Deg
+        Vector3 toTarget = -toCamera;
+        Vector3 planarToTarget = new Vector3(toTarget.x, 0f, toTarget.z);
+        _yaw = planarToTarget.sqrMagnitude > 0.0001f
+            ? Mathf.Atan2(planarToTarget.x, planarToTarget.z) * Mathf.Rad2Deg
             : _target.eulerAngles.y;
 
-        float horizontalDistance = planarToCamera.magnitude;
-        _pitch = Mathf.Atan2(-toCamera.y, horizontalDistance) * Mathf.Rad2Deg;
+        float horizontalDistance = planarToTarget.magnitude;
+        _pitch = Mathf.Atan2(toTarget.y, horizontalDistance) * Mathf.Rad2Deg;
         _pitch = Mathf.Clamp(_pitch, _settings.minPitch, _settings.maxPitch);
         _isInitialized = true;
     }
