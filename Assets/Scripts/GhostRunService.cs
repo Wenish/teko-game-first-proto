@@ -8,6 +8,7 @@ public class GhostRunService : IStartable, IFixedTickable, IDisposable
     private const string BestRunRecordingKey = "best_run_recording_v1";
     private const string BaseColorProperty = "_BaseColor";
     private const string ColorProperty = "_Color";
+    private static readonly Color GhostColor = new(0f, 0.85f, 0.85f, 0.75f);
 
     private readonly GameTimerService _gameTimerService;
     private readonly FrogInputStateService _inputStateService;
@@ -280,22 +281,80 @@ public class GhostRunService : IStartable, IFixedTickable, IDisposable
             renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             renderer.receiveShadows = false;
 
-            var propertyBlock = new MaterialPropertyBlock();
-            renderer.GetPropertyBlock(propertyBlock);
-
-            if (renderer.sharedMaterial != null)
+            var sourceMaterials = renderer.sharedMaterials;
+            if (sourceMaterials == null || sourceMaterials.Length == 0)
             {
-                if (renderer.sharedMaterial.HasProperty(BaseColorProperty))
-                {
-                    propertyBlock.SetColor(BaseColorProperty, new Color(0.35f, 0.9f, 1f, 0.65f));
-                }
-                else if (renderer.sharedMaterial.HasProperty(ColorProperty))
-                {
-                    propertyBlock.SetColor(ColorProperty, new Color(0.35f, 0.9f, 1f, 0.65f));
-                }
+                continue;
             }
 
-            renderer.SetPropertyBlock(propertyBlock);
+            var ghostMaterials = new Material[sourceMaterials.Length];
+            for (int i = 0; i < sourceMaterials.Length; i++)
+            {
+                Material source = sourceMaterials[i];
+                if (source == null)
+                {
+                    ghostMaterials[i] = null;
+                    continue;
+                }
+
+                var ghostMaterial = new Material(source);
+                ConfigureMaterialTransparency(ghostMaterial);
+                ApplyGhostColor(ghostMaterial);
+                ghostMaterials[i] = ghostMaterial;
+            }
+
+            renderer.sharedMaterials = ghostMaterials;
+        }
+    }
+
+    private static void ConfigureMaterialTransparency(Material material)
+    {
+        if (material == null)
+        {
+            return;
+        }
+
+        if (material.HasProperty("_Surface"))
+        {
+            // URP Lit/Unlit path.
+            material.SetFloat("_Surface", 1f);
+            material.SetFloat("_Blend", 0f);
+            material.SetFloat("_ZWrite", 0f);
+            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.SetShaderPassEnabled("DepthOnly", false);
+            material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        }
+        else if (material.HasProperty("_Mode"))
+        {
+            // Built-in Standard shader path.
+            material.SetFloat("_Mode", 3f);
+            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.SetInt("_ZWrite", 0);
+            material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        }
+
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+    }
+
+    private static void ApplyGhostColor(Material material)
+    {
+        if (material == null)
+        {
+            return;
+        }
+
+        if (material.HasProperty(BaseColorProperty))
+        {
+            material.SetColor(BaseColorProperty, GhostColor);
+        }
+
+        if (material.HasProperty(ColorProperty))
+        {
+            material.SetColor(ColorProperty, GhostColor);
         }
     }
 
