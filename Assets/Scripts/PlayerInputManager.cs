@@ -25,7 +25,7 @@ public class PlayerInputManager : MonoBehaviour
 
 	public void OnLook(InputValue value)
 	{
-		_lookInput = value.Get<Vector2>();
+		_lookInput += value.Get<Vector2>();
 	}
 
 	private void Update()
@@ -35,9 +35,26 @@ public class PlayerInputManager : MonoBehaviour
 			return;
 		}
 
-		bool isRightMousePressed = Mouse.current != null && Mouse.current.rightButton.isPressed;
-		float mouseTurnInput = isRightMousePressed ? _lookInput.x : 0f;
-		_frogInputStateService.SetMouseTurnInput(mouseTurnInput);
+		float mouseTurnInput = 0f;
+		if (Mouse.current != null)
+		{
+			bool isRightMousePressed = Mouse.current.rightButton.isPressed;
+			if (isRightMousePressed)
+			{
+				mouseTurnInput = Mouse.current.delta.ReadValue().x;
+
+				if (Mathf.Approximately(mouseTurnInput, 0f))
+				{
+					mouseTurnInput = _lookInput.x;
+				}
+			}
+		}
+		else
+		{
+			mouseTurnInput = _lookInput.x;
+		}
+
+		_frogInputStateService.AddMouseTurnInput(mouseTurnInput);
 		_lookInput = Vector2.zero;
 	}
 }

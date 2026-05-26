@@ -98,7 +98,12 @@ public class PlayerFrogMovement : MonoBehaviour
 		}
 
 		Vector2 moveInput = _inputStateService.MoveInput.CurrentValue;
-		float mouseTurnInput = _inputStateService.MouseTurnInput.CurrentValue;
+		float mouseTurnInput = _inputStateService.ConsumeMouseTurnInput();
+
+		if (Mathf.Abs(mouseTurnInput) < _settings.mouseTurnInputDeadzone)
+		{
+			mouseTurnInput = 0f;
+		}
 
 		float turnInput = moveInput.x;
 		float moveInputForward = moveInput.y;
@@ -172,7 +177,7 @@ public class PlayerFrogMovement : MonoBehaviour
 
 	private float GetMouseTurnSensitivity()
 	{
-		return _settings.mouseTurnSensitivity;
+		return _settings.mouseTurnSensitivity * _settings.mouseTurnMultiplier;
 	}
 
 	private bool IsGrounded()

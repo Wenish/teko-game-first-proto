@@ -7,6 +7,8 @@ public class FrogPlayerSettings : ScriptableObject
     [Min(0f)] public float groundMoveSpeed = 6f;
     [Min(0f)] public float groundTurnSpeed = 180f;
     [Min(0f)] public float mouseTurnSensitivity = 0.3f;
+    [Min(0f)] public float mouseTurnMultiplier = 1f;
+    [Min(0f)] public float mouseTurnInputDeadzone = 0.01f;
     [Min(0f)] public float airMoveAcceleration = 22f;
     [Min(0f)] public float airMaxMoveSpeed = 8f;
 
