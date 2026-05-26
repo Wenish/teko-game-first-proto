@@ -27,6 +27,11 @@ public class GameHudView : MonoBehaviour
     private Label _bestTimeLabel;
     private Label _winLabel;
 
+    private float _latestBestTimeSeconds = -1f;
+    private float _bestTimeAtRunStart = -1f;
+    private bool _hasRunCompletionResult;
+    private RunCompletionResult _lastRunCompletionResult;
+
     [Inject]
     public void Construct(
         [Key(UIDocumentConfig.UIType.GameHud)] UIDocumentConfig uiDocumentConfig,
@@ -117,6 +122,9 @@ public class GameHudView : MonoBehaviour
             _gameTimerService.BestTimeSeconds
                 .Subscribe(UpdateBestTimeLabel)
                 .AddTo(this);
+
+            _gameTimerService.RunStarted += OnRunStarted;
+            _gameTimerService.RunCompleted += OnRunCompleted;
         }
         else
         {
@@ -136,6 +144,17 @@ public class GameHudView : MonoBehaviour
         _frogChargeStateReader.IsCharging
             .Subscribe(UpdateChargeVisibility)
             .AddTo(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (_gameTimerService == null)
+        {
+            return;
+        }
+
+        _gameTimerService.RunStarted -= OnRunStarted;
+        _gameTimerService.RunCompleted -= OnRunCompleted;
     }
 
     private void UpdateCoinLabel(int coins)
@@ -162,6 +181,10 @@ public class GameHudView : MonoBehaviour
                 hasWon
                     ? DisplayStyle.Flex
                     : DisplayStyle.None;
+
+            _winLabel.text = hasWon
+                ? BuildWinMessage()
+                : string.Empty;
         }
     }
 
@@ -175,6 +198,8 @@ public class GameHudView : MonoBehaviour
 
     private void UpdateBestTimeLabel(float bestTimeSeconds)
     {
+        _latestBestTimeSeconds = bestTimeSeconds;
+
         if (_bestTimeLabel == null)
         {
             return;
@@ -184,6 +209,59 @@ public class GameHudView : MonoBehaviour
             bestTimeSeconds >= 0f
                 ? $"Best: {FormatTime(bestTimeSeconds)}"
                 : "Best: --:--.--";
+    }
+
+    private void OnRunStarted()
+    {
+        _bestTimeAtRunStart = _latestBestTimeSeconds;
+        _hasRunCompletionResult = false;
+    }
+
+    private void OnRunCompleted(RunCompletionResult result)
+    {
+        _lastRunCompletionResult = result;
+        _hasRunCompletionResult = true;
+
+        if (_winConditionService != null && _winConditionService.HasWon.CurrentValue)
+        {
+            UpdateWinLabel(true);
+        }
+    }
+
+    private string BuildWinMessage()
+    {
+        if (!_hasRunCompletionResult)
+        {
+            return $"You win!\nRun time {GetRunTimeText()}";
+        }
+
+        if (!_lastRunCompletionResult.IsNewBest)
+        {
+            return $"You win!\nRun time {GetRunTimeText()}";
+        }
+
+        if (_bestTimeAtRunStart < 0f)
+        {
+            return $"First finish {FormatTime(_lastRunCompletionResult.FinalTimeSeconds)}!";
+        }
+
+        float improvementSeconds = Mathf.Max(0f, _bestTimeAtRunStart - _lastRunCompletionResult.FinalTimeSeconds);
+        return $"New record {FormatTime(_lastRunCompletionResult.FinalTimeSeconds)}!\nBeat old record by {FormatTime(improvementSeconds)}";
+    }
+
+    private string GetRunTimeText()
+    {
+        if (_hasRunCompletionResult)
+        {
+            return FormatTime(_lastRunCompletionResult.FinalTimeSeconds);
+        }
+
+        if (_gameTimerService != null)
+        {
+            return FormatTime(_gameTimerService.ElapsedSeconds.CurrentValue);
+        }
+
+        return FormatTime(0f);
     }
 
     private static string FormatTime(float seconds)
