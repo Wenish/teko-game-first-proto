@@ -8,9 +8,12 @@ public class CameraOrbitView : MonoBehaviour
 
     private CameraOrbitSettings _settings;
     private CameraOrbitInputService _inputService;
+    private Rigidbody _targetRigidbody;
     private float _yaw;
     private float _pitch;
     private bool _isInitialized;
+    private bool _isTargetAnchorInitialized;
+    private Vector3 _smoothedTargetAnchor;
 
     [Inject]
     public void Construct(
@@ -24,6 +27,11 @@ public class CameraOrbitView : MonoBehaviour
         if (_target == null && playerFrogMovement != null)
         {
             _target = playerFrogMovement.transform;
+        }
+
+        if (_target != null)
+        {
+            _targetRigidbody = _target.GetComponent<Rigidbody>();
         }
     }
 
@@ -59,7 +67,7 @@ public class CameraOrbitView : MonoBehaviour
                 _settings.returnPitchSpeed * Time.deltaTime);
         }
 
-        Vector3 targetPosition = _target.position + _settings.targetOffset;
+            Vector3 targetPosition = GetSmoothedTargetAnchor();
         Quaternion orbitRotation = Quaternion.Euler(_pitch, _yaw, 0f);
         Vector3 desiredPosition = targetPosition - (orbitRotation * Vector3.forward * _settings.distance);
 
@@ -73,7 +81,7 @@ public class CameraOrbitView : MonoBehaviour
 
     private void InitializeAngles()
     {
-        Vector3 toCamera = transform.position - (_target.position + _settings.targetOffset);
+        Vector3 toCamera = transform.position - GetRawTargetAnchor();
         if (toCamera.sqrMagnitude < 0.0001f)
         {
             _yaw = _target.eulerAngles.y;
@@ -92,5 +100,35 @@ public class CameraOrbitView : MonoBehaviour
         _pitch = Mathf.Atan2(toTarget.y, horizontalDistance) * Mathf.Rad2Deg;
         _pitch = Mathf.Clamp(_pitch, _settings.minPitch, _settings.maxPitch);
         _isInitialized = true;
+    }
+
+    private Vector3 GetSmoothedTargetAnchor()
+    {
+        Vector3 rawTargetAnchor = GetRawTargetAnchor();
+
+        if (!_isTargetAnchorInitialized)
+        {
+            _smoothedTargetAnchor = rawTargetAnchor;
+            _isTargetAnchorInitialized = true;
+            return _smoothedTargetAnchor;
+        }
+
+        float targetT = 1f - Mathf.Exp(-_settings.positionLerpSpeed * Time.deltaTime);
+        _smoothedTargetAnchor = Vector3.Lerp(_smoothedTargetAnchor, rawTargetAnchor, targetT);
+        return _smoothedTargetAnchor;
+    }
+
+    private Vector3 GetRawTargetAnchor()
+    {
+        if (_targetRigidbody == null && _target != null)
+        {
+            _targetRigidbody = _target.GetComponent<Rigidbody>();
+        }
+
+        Vector3 targetPosition = _targetRigidbody != null
+            ? _targetRigidbody.position
+            : _target.position;
+
+        return targetPosition + _settings.targetOffset;
     }
 }

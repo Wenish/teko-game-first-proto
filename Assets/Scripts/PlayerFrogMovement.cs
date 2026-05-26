@@ -36,6 +36,7 @@ public class PlayerFrogMovement : MonoBehaviour
 	{
 		_rigidbody = GetComponent<Rigidbody>();
 		_collider = GetComponent<Collider>();
+		_rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 		_rigidbody.useGravity = false;
 		_airborneMoveDirection = GetPlanarDirection(transform.forward);
 		_wasGrounded = IsGrounded();
