@@ -7,6 +7,8 @@ using VContainer;
 [RequireComponent(typeof(UIDocument))]
 public class GameHudView : MonoBehaviour
 {
+    UIDocumentConfig _uiDocumentConfig;
+    private UIDocument _uiDocument;
     private const float CoinAnchorTop = 16f;
     private const float CoinAnchorRight = 18f;
 
@@ -27,6 +29,7 @@ public class GameHudView : MonoBehaviour
 
     [Inject]
     public void Construct(
+        [Key(UIDocumentConfig.UIType.GameHud)] UIDocumentConfig uiDocumentConfig,
         CoinService coinService,
         CoinStatisticsService coinStatisticsService,
         GameTimerService gameTimerService,
@@ -38,11 +41,16 @@ public class GameHudView : MonoBehaviour
         _gameTimerService = gameTimerService;
         _winConditionService = winConditionService;
         _frogChargeStateReader = frogChargeStateReader;
+        _uiDocumentConfig = uiDocumentConfig;   
     }
 
     private void Awake()
     {
-        var root = GetComponent<UIDocument>().rootVisualElement;
+        _uiDocument = gameObject.GetComponent<UIDocument>();
+        _uiDocument.panelSettings = _uiDocumentConfig.PanelSettings;
+        _uiDocument.visualTreeAsset = _uiDocumentConfig.VisualTreeAsset;
+        
+        var root = _uiDocument.rootVisualElement;
 
         _coinAnchor = root.Q<VisualElement>("coin-anchor");
         _chargeAnchor = root.Q<VisualElement>("charge-anchor");

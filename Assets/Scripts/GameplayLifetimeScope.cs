@@ -10,6 +10,9 @@ public class GameplayLifetimeScope : LifetimeScope
     [SerializeField]
     private CameraOrbitSettings _cameraOrbitSettings;
 
+    [SerializeField]
+    private UIDocumentConfig _gameHudUIDocumentConfig;
+
     protected override void Configure(IContainerBuilder builder)
     {
         if (_frogPlayerSettings == null)
@@ -20,6 +23,19 @@ public class GameplayLifetimeScope : LifetimeScope
         if (_cameraOrbitSettings == null)
         {
             _cameraOrbitSettings = ScriptableObject.CreateInstance<CameraOrbitSettings>();
+        }
+
+        var hasGameHudConfig = _gameHudUIDocumentConfig != null;
+        if (hasGameHudConfig)
+        {
+            builder.RegisterInstance(_gameHudUIDocumentConfig)
+                .Keyed(UIDocumentConfig.UIType.GameHud);
+        }
+        else
+        {
+            Debug.LogError(
+                $"{nameof(GameplayLifetimeScope)} on '{name}' missing {nameof(UIDocumentConfig)} for GameHud. " +
+                "Assign _gameHudUIDocumentConfig in inspector.");
         }
 
         builder.RegisterInstance(_frogPlayerSettings);
@@ -37,15 +53,24 @@ public class GameplayLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<FrogJumpChargeService>(Lifetime.Scoped).AsImplementedInterfaces();
         builder.RegisterEntryPoint<GhostRunService>(Lifetime.Scoped).AsImplementedInterfaces();
 
-        builder.RegisterBuildCallback(container =>
+        if (hasGameHudConfig)
         {
-            container.Resolve<CoinStatisticsService>();
-        });
+            builder.RegisterComponentOnNewGameObject<GameHudView>(Lifetime.Singleton);
+        }
 
         builder.RegisterComponentInHierarchy<PlayerInputManager>();
         builder.RegisterComponentInHierarchy<PlayerFrogMovement>();
         builder.RegisterComponentInHierarchy<CameraOrbitView>();
         builder.RegisterComponentInHierarchy<DebugCoinView>();
-        builder.RegisterComponentInHierarchy<GameHudView>();
+
+        builder.RegisterBuildCallback(container =>
+        {
+            container.Resolve<CoinStatisticsService>();
+
+            if (hasGameHudConfig)
+            {
+                container.Resolve<GameHudView>();
+            }
+        });
     }
 }
