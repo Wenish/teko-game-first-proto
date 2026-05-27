@@ -16,6 +16,9 @@ public class PlayerFrogMovement : MonoBehaviour
 	private IDisposable _jumpReleasedSubscription;
 	private Vector3 _airborneMoveDirection;
 	private bool _wasGrounded;
+	private bool _suppressGroundControlAfterJump;
+	private bool _hasLeftGroundSinceJump;
+	private const float GroundedUpwardVelocityTolerance = 0.05f;
 
 	[Inject]
 	public void Construct(
@@ -45,12 +48,17 @@ public class PlayerFrogMovement : MonoBehaviour
 		_rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 		_rigidbody.useGravity = false;
 		_airborneMoveDirection = GetPlanarDirection(transform.forward);
-		_wasGrounded = IsGrounded();
+		_wasGrounded = IsGroundedForMovement();
 	}
 
 	private void FixedUpdate()
 	{
-		bool isGrounded = IsGrounded();
+		bool isGrounded = IsGroundedForMovement();
+
+		if (_suppressGroundControlAfterJump && !_hasLeftGroundSinceJump && !isGrounded)
+		{
+			_hasLeftGroundSinceJump = true;
+		}
 
 		if (!isGrounded && _wasGrounded)
 		{
@@ -60,6 +68,14 @@ public class PlayerFrogMovement : MonoBehaviour
 		_groundStateService.SetIsGrounded(isGrounded);
 		TickMovement(isGrounded);
 		ApplyCustomGravity();
+
+		// Clear jump lock AFTER movement so the landing frame itself is still suppressed.
+		if (_suppressGroundControlAfterJump && _hasLeftGroundSinceJump && isGrounded)
+		{
+			_suppressGroundControlAfterJump = false;
+			_hasLeftGroundSinceJump = false;
+		}
+
 		_wasGrounded = isGrounded;
 	}
 
@@ -70,7 +86,7 @@ public class PlayerFrogMovement : MonoBehaviour
 
 	private void OnJumpReleased(FrogJumpReleasedEvent e)
 	{
-		if (!IsGrounded())
+		if (!IsGroundedForMovement())
 		{
 			return;
 		}
@@ -88,10 +104,18 @@ public class PlayerFrogMovement : MonoBehaviour
 
 		Vector3 jumpImpulse = (Vector3.up * upwardForce) + directionalForce;
 		_rigidbody.AddForce(jumpImpulse, ForceMode.VelocityChange);
+		_suppressGroundControlAfterJump = true;
+		_hasLeftGroundSinceJump = false;
 	}
 
 	private void TickMovement(bool isGrounded)
 	{
+		if (isGrounded && _suppressGroundControlAfterJump)
+		{
+			_inputStateService.ConsumeMouseTurnInput();
+			return;
+		}
+
 		bool isCharging = _frogChargeStateReader != null
 			&& _frogChargeStateReader.IsCharging.CurrentValue;
 
@@ -149,28 +173,8 @@ public class PlayerFrogMovement : MonoBehaviour
 			return;
 		}
 
-		if (Mathf.Approximately(moveInputForward, 0f))
-		{
-			return;
-		}
-
-		_rigidbody.AddForce(
-			_airborneMoveDirection * (moveInputForward * _settings.airMoveAcceleration),
-			ForceMode.Acceleration);
-
-		Vector3 velocityAfterSteer = _rigidbody.linearVelocity;
-		Vector3 horizontalVelocity = new Vector3(velocityAfterSteer.x, 0f, velocityAfterSteer.z);
-
-		float maxAirSpeed = Mathf.Max(0f, _settings.airMaxMoveSpeed);
-		if (horizontalVelocity.sqrMagnitude <= (maxAirSpeed * maxAirSpeed))
-		{
-			return;
-		}
-
-		Vector3 clampedHorizontal = horizontalVelocity.normalized * maxAirSpeed;
-		velocityAfterSteer.x = clampedHorizontal.x;
-		velocityAfterSteer.z = clampedHorizontal.z;
-		_rigidbody.linearVelocity = velocityAfterSteer;
+		// Keep jump trajectory deterministic: no forward/back acceleration while airborne.
+		return;
 	}
 
 	private void ApplyCustomGravity()
@@ -210,6 +214,16 @@ public class PlayerFrogMovement : MonoBehaviour
 			castDistance,
 			_settings.groundLayerMask,
 			QueryTriggerInteraction.Ignore);
+	}
+
+	private bool IsGroundedForMovement()
+	{
+		if (!IsGrounded())
+		{
+			return false;
+		}
+
+		return _rigidbody.linearVelocity.y <= GroundedUpwardVelocityTolerance;
 	}
 
 	private Vector3 GetPlanarDirection(Vector3 source)
