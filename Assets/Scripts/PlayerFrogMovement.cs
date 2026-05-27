@@ -15,6 +15,7 @@ public class PlayerFrogMovement : MonoBehaviour
 	private Collider _collider;
 	private IDisposable _jumpReleasedSubscription;
 	private Vector3 _airborneMoveDirection;
+	private Vector3 _lockedJumpHorizontalVelocity;
 	private bool _wasGrounded;
 	private bool _suppressGroundControlAfterJump;
 	private bool _hasLeftGroundSinceJump;
@@ -63,6 +64,8 @@ public class PlayerFrogMovement : MonoBehaviour
 		if (!isGrounded && _wasGrounded)
 		{
 			_airborneMoveDirection = GetPlanarDirection(transform.forward);
+			Vector3 vel = _rigidbody.linearVelocity;
+			_lockedJumpHorizontalVelocity = new Vector3(vel.x, 0f, vel.z);
 		}
 
 		_groundStateService.SetIsGrounded(isGrounded);
@@ -173,8 +176,11 @@ public class PlayerFrogMovement : MonoBehaviour
 			return;
 		}
 
-		// Keep jump trajectory deterministic: no forward/back acceleration while airborne.
-		return;
+		// Lock horizontal velocity to preserve jump trajectory while still allowing rotation.
+		Vector3 airVelocity = _rigidbody.linearVelocity;
+		airVelocity.x = _lockedJumpHorizontalVelocity.x;
+		airVelocity.z = _lockedJumpHorizontalVelocity.z;
+		_rigidbody.linearVelocity = airVelocity;
 	}
 
 	private void ApplyCustomGravity()
