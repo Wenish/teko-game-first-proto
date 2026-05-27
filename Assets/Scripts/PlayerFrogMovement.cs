@@ -19,6 +19,7 @@ public class PlayerFrogMovement : MonoBehaviour
 	private bool _wasGrounded;
 	private bool _suppressGroundControlAfterJump;
 	private bool _hasLeftGroundSinceJump;
+	private Vector3 _preCollisionVelocity;
 	private const float GroundedUpwardVelocityTolerance = 0.05f;
 
 	[Inject]
@@ -80,6 +81,38 @@ public class PlayerFrogMovement : MonoBehaviour
 		}
 
 		_wasGrounded = isGrounded;
+		_preCollisionVelocity = _rigidbody.linearVelocity;
+	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (IsGroundedForMovement())
+		{
+			return;
+		}
+
+		for (int i = 0; i < collision.contactCount; i++)
+		{
+			Vector3 normal = collision.GetContact(i).normal;
+			if (normal.y >= _settings.wallNormalYThreshold)
+			{
+				continue;
+			}
+
+			Vector3 reflected = Vector3.Reflect(_preCollisionVelocity, normal)
+				* _settings.wallBounceBounciness;
+
+			_lockedJumpHorizontalVelocity = new Vector3(reflected.x, 0f, reflected.z);
+
+			if (_lockedJumpHorizontalVelocity.sqrMagnitude > 0.0001f)
+			{
+				_airborneMoveDirection = _lockedJumpHorizontalVelocity.normalized;
+				_rigidbody.MoveRotation(Quaternion.LookRotation(_airborneMoveDirection, Vector3.up));
+			}
+
+			_rigidbody.linearVelocity = reflected;
+			break;
+		}
 	}
 
 	private void OnDestroy()

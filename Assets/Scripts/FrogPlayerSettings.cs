@@ -30,6 +30,10 @@ public class FrogPlayerSettings : ScriptableObject
     [Range(0.1f, 1f)] public float groundCheckRadiusScale = 0.9f;
     public LayerMask groundLayerMask = ~0;
 
+    [Header("Wall Bounce")]
+    [Range(0f, 1f)] public float wallBounceBounciness = 0.8f;
+    [Range(0f, 1f)] public float wallNormalYThreshold = 0.5f;
+
     public float RuntimeMouseTurnMultiplier
     {
         get
