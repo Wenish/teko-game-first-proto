@@ -1,18 +1,23 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
 
 public class PlayerInputManager : MonoBehaviour
 {
+	private SceneService _sceneService;
 	private FrogInputStateService _frogInputStateService;
 	private CameraOrbitInputService _cameraOrbitInputService;
 	private Vector2 _lookInput;
+	private bool _isReloadingScene;
 
 	[Inject]
 	public void Construct(
+		SceneService sceneService,
 		FrogInputStateService frogInputStateService,
 		CameraOrbitInputService cameraOrbitInputService)
 	{
+		_sceneService = sceneService;
 		_frogInputStateService = frogInputStateService;
 		_cameraOrbitInputService = cameraOrbitInputService;
 	}
@@ -34,9 +39,15 @@ public class PlayerInputManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (_frogInputStateService == null || _cameraOrbitInputService == null)
+		if (_sceneService == null || _frogInputStateService == null || _cameraOrbitInputService == null)
 		{
 			return;
+		}
+
+		if (!_isReloadingScene && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+		{
+			_isReloadingScene = true;
+			_sceneService.ReloadCurrentSceneAsync().Forget();
 		}
 
 		float mouseTurnInput = 0f;

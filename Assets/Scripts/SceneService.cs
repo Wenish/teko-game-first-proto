@@ -16,6 +16,16 @@ public class SceneService
         return LoadSceneAsync("MainMenuScene");
     }
 
+    public UniTask ReloadCurrentSceneAsync()
+    {
+        if (string.IsNullOrEmpty(_currentScene))
+        {
+            return UniTask.CompletedTask;
+        }
+
+        return LoadSceneAsync(_currentScene);
+    }
+
     public async UniTask LoadSceneAsync(string sceneName)
     {
         _loadingScreen.Show();
