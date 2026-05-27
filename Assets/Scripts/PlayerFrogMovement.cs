@@ -149,17 +149,8 @@ public class PlayerFrogMovement : MonoBehaviour
 			return;
 		}
 
-		if (Mathf.Approximately(moveInputForward, 0f))
-		{
-			return;
-		}
-
-		_rigidbody.AddForce(
-			_airborneMoveDirection * (moveInputForward * _settings.airMoveAcceleration),
-			ForceMode.Acceleration);
-
-		Vector3 velocityAfterSteer = _rigidbody.linearVelocity;
-		Vector3 horizontalVelocity = new Vector3(velocityAfterSteer.x, 0f, velocityAfterSteer.z);
+		Vector3 velocityAfterJump = _rigidbody.linearVelocity;
+		Vector3 horizontalVelocity = new Vector3(velocityAfterJump.x, 0f, velocityAfterJump.z);
 
 		float maxAirSpeed = Mathf.Max(0f, _settings.airMaxMoveSpeed);
 		if (horizontalVelocity.sqrMagnitude <= (maxAirSpeed * maxAirSpeed))
@@ -168,9 +159,9 @@ public class PlayerFrogMovement : MonoBehaviour
 		}
 
 		Vector3 clampedHorizontal = horizontalVelocity.normalized * maxAirSpeed;
-		velocityAfterSteer.x = clampedHorizontal.x;
-		velocityAfterSteer.z = clampedHorizontal.z;
-		_rigidbody.linearVelocity = velocityAfterSteer;
+		velocityAfterJump.x = clampedHorizontal.x;
+		velocityAfterJump.z = clampedHorizontal.z;
+		_rigidbody.linearVelocity = velocityAfterJump;
 	}
 
 	private void ApplyCustomGravity()
