@@ -5,7 +5,6 @@ using VContainer.Unity;
 public class EscapeToMenuService : ITickable
 {
     private readonly SceneService _sceneService;
-    private bool _isLoading;
 
     public EscapeToMenuService(SceneService sceneService)
     {
@@ -14,7 +13,7 @@ public class EscapeToMenuService : ITickable
 
     public void Tick()
     {
-        if (_isLoading)
+        if (_sceneService.IsLoading.CurrentValue)
         {
             return;
         }
@@ -24,7 +23,6 @@ public class EscapeToMenuService : ITickable
             return;
         }
 
-        _isLoading = true;
         _sceneService.LoadMainMenuSceneAsync().Forget();
     }
 

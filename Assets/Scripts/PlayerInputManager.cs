@@ -9,7 +9,6 @@ public class PlayerInputManager : MonoBehaviour
 	private FrogInputStateService _frogInputStateService;
 	private CameraOrbitInputService _cameraOrbitInputService;
 	private Vector2 _lookInput;
-	private bool _isReloadingScene;
 
 	[Inject]
 	public void Construct(
@@ -44,9 +43,8 @@ public class PlayerInputManager : MonoBehaviour
 			return;
 		}
 
-		if (!_isReloadingScene && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+		if (!_sceneService.IsLoading.CurrentValue && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
 		{
-			_isReloadingScene = true;
 			_sceneService.ReloadCurrentSceneAsync().Forget();
 		}
 

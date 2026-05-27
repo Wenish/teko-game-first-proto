@@ -1,10 +1,13 @@
 using Cysharp.Threading.Tasks;
+using R3;
 using UnityEngine.SceneManagement;
 
 public class SceneService
 {
     private readonly LoadingScreenService _loadingScreen;
+    private readonly ReactiveProperty<bool> _isLoading = new(false);
     private string _currentScene = string.Empty;
+    public ReadOnlyReactiveProperty<bool> IsLoading => _isLoading;
 
     public SceneService(LoadingScreenService loadingScreen)
     {
@@ -28,44 +31,50 @@ public class SceneService
 
     public async UniTask LoadSceneAsync(string sceneName)
     {
+        if (_isLoading.CurrentValue)
+        {
+            return;
+        }
+
+        _isLoading.Value = true;
         _loadingScreen.Show();
 
-
-        if (!string.IsNullOrEmpty(_currentScene))
+        try
         {
-            var currentScene = SceneManager.GetSceneByName(_currentScene);
-            if (currentScene.IsValid() && currentScene.isLoaded)
+            if (!string.IsNullOrEmpty(_currentScene))
             {
-                var unloadOperation = SceneManager.UnloadSceneAsync(_currentScene);
-                if (unloadOperation != null)
+                var currentScene = SceneManager.GetSceneByName(_currentScene);
+                if (currentScene.IsValid() && currentScene.isLoaded)
                 {
-                    await unloadOperation.ToUniTask();
+                    var unloadOperation = SceneManager.UnloadSceneAsync(_currentScene);
+                    if (unloadOperation != null)
+                    {
+                        await unloadOperation.ToUniTask();
+                    }
                 }
             }
+
+            var loadOperation = SceneManager.LoadSceneAsync(
+                sceneName,
+                LoadSceneMode.Additive);
+
+            if (loadOperation != null)
+            {
+                await loadOperation.ToUniTask();
+            }
+
+            _currentScene = sceneName;
+
+            var loadedScene = SceneManager.GetSceneByName(sceneName);
+            if (loadedScene.IsValid() && loadedScene.isLoaded)
+            {
+                SceneManager.SetActiveScene(loadedScene);
+            }
         }
-
-        
-        // await UniTask.Delay(System.TimeSpan.FromSeconds(3));
-
-        
-
-        var loadOperation = SceneManager.LoadSceneAsync(
-            sceneName,
-            LoadSceneMode.Additive);
-
-        if (loadOperation != null)
+        finally
         {
-            await loadOperation.ToUniTask();
+            _isLoading.Value = false;
+            _loadingScreen.Hide();
         }
-
-        _currentScene = sceneName;
-
-        var loadedScene = SceneManager.GetSceneByName(sceneName);
-        if (loadedScene.IsValid() && loadedScene.isLoaded)
-        {
-            SceneManager.SetActiveScene(loadedScene);
-        }
-
-        _loadingScreen.Hide();
     }
 }
