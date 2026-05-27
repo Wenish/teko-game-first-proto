@@ -208,7 +208,7 @@ public class GameHudView : MonoBehaviour
         _bestTimeLabel.text =
             bestTimeSeconds >= 0f
                 ? $"Best: {FormatTime(bestTimeSeconds)}"
-                : "Best: --:--.--";
+                : "Best: --:---.---";
     }
 
     private void OnRunStarted()
@@ -268,7 +268,7 @@ public class GameHudView : MonoBehaviour
     {
         var clampedSeconds = Mathf.Max(0f, seconds);
         var span = TimeSpan.FromSeconds(clampedSeconds);
-        return $"{(int)span.TotalMinutes:00}:{span.Seconds:00}.{span.Milliseconds / 10:00}";
+        return $"{(int)span.TotalMinutes:00}:{span.Seconds:00}.{span.Milliseconds:000}";
     }
 
     private void UpdateChargeFill(float chargeNormalized)
